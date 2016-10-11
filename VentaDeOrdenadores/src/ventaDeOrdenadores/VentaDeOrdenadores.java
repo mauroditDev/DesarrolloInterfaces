@@ -5,6 +5,9 @@
  */
 package ventaDeOrdenadores;
 
+import java.util.ArrayList;
+import java.util.Vector;
+
 /**
  *
  * @author alumno
@@ -16,6 +19,7 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
      */
     public VentaDeOrdenadores() {
         initComponents();
+        jTextFieldNombre.grabFocus();
     }
 
     /**
@@ -27,21 +31,410 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        buttonGroupProc = new javax.swing.ButtonGroup();
+        buttonGroupMem = new javax.swing.ButtonGroup();
+        buttonGroupDisc = new javax.swing.ButtonGroup();
+        buttonGroupGraf = new javax.swing.ButtonGroup();
+        jRadioButtonPr0 = new javax.swing.JRadioButton();
+        jRadioButtonPr1 = new javax.swing.JRadioButton();
+        jRadioButtonPr2 = new javax.swing.JRadioButton();
+        jRadioButtonPr3 = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jRadioButtonMem0 = new javax.swing.JRadioButton();
+        jRadioButtonMem1 = new javax.swing.JRadioButton();
+        jRadioButtonMem2 = new javax.swing.JRadioButton();
+        jRadioButtonMem3 = new javax.swing.JRadioButton();
+        jRadioButtonGra0 = new javax.swing.JRadioButton();
+        jRadioButtonGra2 = new javax.swing.JRadioButton();
+        jRadioButtonGra1 = new javax.swing.JRadioButton();
+        jLabel3 = new javax.swing.JLabel();
+        jRadioButtonGra3 = new javax.swing.JRadioButton();
+        jLabel4 = new javax.swing.JLabel();
+        jRadioButtonDisc0 = new javax.swing.JRadioButton();
+        jRadioButtonDisc1 = new javax.swing.JRadioButton();
+        jRadioButtonDisc2 = new javax.swing.JRadioButton();
+        jRadioButtonDisc3 = new javax.swing.JRadioButton();
+        jLabel5 = new javax.swing.JLabel();
+        jCheckBoxOp0 = new javax.swing.JCheckBox();
+        jCheckBoxOp1 = new javax.swing.JCheckBox();
+        jCheckBoxOp2 = new javax.swing.JCheckBox();
+        jCheckBoxOp3 = new javax.swing.JCheckBox();
+        jButtonAdd = new javax.swing.JButton();
+        jButtonBuscar = new javax.swing.JButton();
+        jButtonEliminar = new javax.swing.JButton();
+        jButtonSalir = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBoxLocal = new javax.swing.JComboBox();
+        jTextFieldNombre = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jListResult = new javax.swing.JList();
+        jLabel8 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Venta de Ordenadores");
+        setResizable(false);
+
+        buttonGroupProc.add(jRadioButtonPr0);
+        jRadioButtonPr0.setText("Intel i7-6700K");
+        jRadioButtonPr0.setEnabled(false);
+        jRadioButtonPr0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonPr0ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupProc.add(jRadioButtonPr1);
+        jRadioButtonPr1.setText("Intel i5-6600K");
+        jRadioButtonPr1.setActionCommand("");
+        jRadioButtonPr1.setEnabled(false);
+
+        buttonGroupProc.add(jRadioButtonPr2);
+        jRadioButtonPr2.setText("AMD AD7300");
+        jRadioButtonPr2.setEnabled(false);
+
+        buttonGroupProc.add(jRadioButtonPr3);
+        jRadioButtonPr3.setText("AMD A4- 3400");
+        jRadioButtonPr3.setEnabled(false);
+
+        jLabel1.setText("Procesador");
+
+        jLabel2.setText("Memoria");
+
+        buttonGroupMem.add(jRadioButtonMem0);
+        jRadioButtonMem0.setText("4.0 Gb");
+        jRadioButtonMem0.setEnabled(false);
+
+        buttonGroupMem.add(jRadioButtonMem1);
+        jRadioButtonMem1.setText("8.0 Gb");
+        jRadioButtonMem1.setEnabled(false);
+
+        buttonGroupMem.add(jRadioButtonMem2);
+        jRadioButtonMem2.setText("16.0 Gb");
+        jRadioButtonMem2.setEnabled(false);
+
+        buttonGroupMem.add(jRadioButtonMem3);
+        jRadioButtonMem3.setText("32.0 Gb");
+        jRadioButtonMem3.setEnabled(false);
+
+        buttonGroupGraf.add(jRadioButtonGra0);
+        jRadioButtonGra0.setText("AMD Radeon R9");
+        jRadioButtonGra0.setEnabled(false);
+        jRadioButtonGra0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonGra0ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupGraf.add(jRadioButtonGra2);
+        jRadioButtonGra2.setText("Nvidia GTX 1080");
+        jRadioButtonGra2.setEnabled(false);
+
+        buttonGroupGraf.add(jRadioButtonGra1);
+        jRadioButtonGra1.setText("AMD Radeon R7");
+        jRadioButtonGra1.setEnabled(false);
+
+        jLabel3.setText("Gráfica");
+
+        buttonGroupGraf.add(jRadioButtonGra3);
+        jRadioButtonGra3.setText("Nvidia Titan");
+        jRadioButtonGra3.setEnabled(false);
+
+        jLabel4.setText("Disco Duro");
+
+        buttonGroupDisc.add(jRadioButtonDisc0);
+        jRadioButtonDisc0.setText("650 GB");
+        jRadioButtonDisc0.setEnabled(false);
+        jRadioButtonDisc0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonDisc0ActionPerformed(evt);
+            }
+        });
+
+        buttonGroupDisc.add(jRadioButtonDisc1);
+        jRadioButtonDisc1.setText("1 TB");
+        jRadioButtonDisc1.setEnabled(false);
+
+        buttonGroupDisc.add(jRadioButtonDisc2);
+        jRadioButtonDisc2.setText("3 TB");
+        jRadioButtonDisc2.setEnabled(false);
+
+        buttonGroupDisc.add(jRadioButtonDisc3);
+        jRadioButtonDisc3.setText("10 TB");
+        jRadioButtonDisc3.setEnabled(false);
+
+        jLabel5.setText("Opciones:");
+
+        jCheckBoxOp0.setText("Grabadora DVD");
+        jCheckBoxOp0.setEnabled(false);
+        jCheckBoxOp0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxOp0ActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxOp1.setText("Wifi");
+        jCheckBoxOp1.setEnabled(false);
+
+        jCheckBoxOp2.setText("Sintonizador TV");
+        jCheckBoxOp2.setEnabled(false);
+
+        jCheckBoxOp3.setText("Backup/Restore");
+        jCheckBoxOp3.setEnabled(false);
+
+        jButtonAdd.setMnemonic('a');
+        jButtonAdd.setText("Añadir");
+        jButtonAdd.setEnabled(false);
+        jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddActionPerformed(evt);
+            }
+        });
+
+        jButtonBuscar.setMnemonic('b');
+        jButtonBuscar.setText("Buscar");
+        jButtonBuscar.setEnabled(false);
+
+        jButtonEliminar.setMnemonic('e');
+        jButtonEliminar.setText("Eliminar");
+        jButtonEliminar.setEnabled(false);
+
+        jButtonSalir.setMnemonic('s');
+        jButtonSalir.setText("Salir");
+        jButtonSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalirActionPerformed(evt);
+            }
+        });
+
+        jButtonCancel.setMnemonic('c');
+        jButtonCancel.setText("Cancelar");
+
+        jLabel6.setText("Nombre del cliente:");
+
+        jLabel7.setText("Localidad");
+
+        jComboBoxLocal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Villalba", "Alpedrete", "Galapagar", "Guadarrama", "Moralzarzal" }));
+        jComboBoxLocal.setEnabled(false);
+
+        jTextFieldNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldNombreKeyPressed(evt);
+            }
+        });
+
+        jScrollPane1.setViewportView(jListResult);
+
+        jLabel8.setText("Lista de clientes:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonAdd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonBuscar))
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonEliminar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jButtonCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(9, 9, 9))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jRadioButtonMem2)
+                                        .addComponent(jRadioButtonMem3)
+                                        .addComponent(jRadioButtonMem1, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jRadioButtonMem0, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRadioButtonDisc0)
+                                    .addComponent(jRadioButtonDisc1)
+                                    .addComponent(jRadioButtonDisc2)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jRadioButtonDisc3))
+                                .addGap(29, 29, 29)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jRadioButtonGra0)
+                                        .addComponent(jRadioButtonGra2)
+                                        .addComponent(jRadioButtonGra1)
+                                        .addComponent(jRadioButtonGra3, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jCheckBoxOp0)
+                                    .addComponent(jCheckBoxOp1)
+                                    .addComponent(jCheckBoxOp2)
+                                    .addComponent(jCheckBoxOp3))))
+                        .addGap(40, 40, 40))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jRadioButtonPr0)
+                                .addComponent(jRadioButtonPr1)
+                                .addComponent(jRadioButtonPr2)
+                                .addComponent(jRadioButtonPr3, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jComboBoxLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(52, 52, 52))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jRadioButtonGra0)
+                                    .addComponent(jCheckBoxOp0))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jRadioButtonGra1)
+                                    .addComponent(jCheckBoxOp1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jRadioButtonGra2)
+                                    .addComponent(jCheckBoxOp2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jRadioButtonGra3)
+                                    .addComponent(jCheckBoxOp3))
+                                .addGap(4, 4, 4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jRadioButtonMem2)
+                                .addGap(27, 27, 27))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jRadioButtonMem0)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jRadioButtonMem1)
+                                .addGap(31, 31, 31)
+                                .addComponent(jRadioButtonMem3))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jRadioButtonDisc2)
+                        .addGap(27, 27, 27))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jRadioButtonDisc0)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonDisc1)
+                        .addGap(31, 31, 31)
+                        .addComponent(jRadioButtonDisc3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonPr0)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonPr1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonPr2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonPr3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonCancel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonAdd)
+                    .addComponent(jButtonBuscar)
+                    .addComponent(jButtonEliminar)
+                    .addComponent(jButtonSalir))
+                .addGap(28, 28, 28))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jRadioButtonPr0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPr0ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonPr0ActionPerformed
+
+    private void jRadioButtonDisc0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonDisc0ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonDisc0ActionPerformed
+
+    private void jRadioButtonGra0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonGra0ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonGra0ActionPerformed
+
+    private void jCheckBoxOp0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOp0ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxOp0ActionPerformed
+
+    private void jTextFieldNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNombreKeyPressed
+        
+        if(evt.getKeyCode()==10){
+            if(jTextFieldNombre.getText().matches("[A-Za-z\\s]+")){
+                iniciar();
+                jComboBoxLocal.grabFocus();
+            }
+            else{
+                javax.swing.JOptionPane.showConfirmDialog(null, "nombre inválido", "Formulario incorrecto", 
+                    javax.swing.JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+        
+    }//GEN-LAST:event_jTextFieldNombreKeyPressed
+
+    private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButtonSalirActionPerformed
+
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+        // TODO add your handling code here:
+        anadir();
+        Vector<String> aux = new Vector();
+        for(int i =0; i<ventas.size();i++){
+            aux.add(ventas.indexOf(i).getNombre());
+        }
+        jListResult.setListData(null);
+    }//GEN-LAST:event_jButtonAddActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +472,186 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupDisc;
+    private javax.swing.ButtonGroup buttonGroupGraf;
+    private javax.swing.ButtonGroup buttonGroupMem;
+    private javax.swing.ButtonGroup buttonGroupProc;
+    private javax.swing.JButton jButtonAdd;
+    private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonEliminar;
+    private javax.swing.JButton jButtonSalir;
+    private javax.swing.JCheckBox jCheckBoxOp0;
+    private javax.swing.JCheckBox jCheckBoxOp1;
+    private javax.swing.JCheckBox jCheckBoxOp2;
+    private javax.swing.JCheckBox jCheckBoxOp3;
+    private javax.swing.JComboBox jComboBoxLocal;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JList jListResult;
+    private javax.swing.JRadioButton jRadioButtonDisc0;
+    private javax.swing.JRadioButton jRadioButtonDisc1;
+    private javax.swing.JRadioButton jRadioButtonDisc2;
+    private javax.swing.JRadioButton jRadioButtonDisc3;
+    private javax.swing.JRadioButton jRadioButtonGra0;
+    private javax.swing.JRadioButton jRadioButtonGra1;
+    private javax.swing.JRadioButton jRadioButtonGra2;
+    private javax.swing.JRadioButton jRadioButtonGra3;
+    private javax.swing.JRadioButton jRadioButtonMem0;
+    private javax.swing.JRadioButton jRadioButtonMem1;
+    private javax.swing.JRadioButton jRadioButtonMem2;
+    private javax.swing.JRadioButton jRadioButtonMem3;
+    private javax.swing.JRadioButton jRadioButtonPr0;
+    private javax.swing.JRadioButton jRadioButtonPr1;
+    private javax.swing.JRadioButton jRadioButtonPr2;
+    private javax.swing.JRadioButton jRadioButtonPr3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextFieldNombre;
     // End of variables declaration//GEN-END:variables
+
+
+    public void botonera(boolean state){
+        jRadioButtonDisc0.setEnabled(state);
+        jRadioButtonDisc1.setEnabled(state);
+        jRadioButtonDisc2.setEnabled(state);
+        jRadioButtonDisc3.setEnabled(state);
+        jRadioButtonGra0.setEnabled(state);
+        jRadioButtonGra1.setEnabled(state);
+        jRadioButtonGra2.setEnabled(state);
+        jRadioButtonGra3.setEnabled(state);
+        jRadioButtonMem0.setEnabled(state);
+        jRadioButtonMem1.setEnabled(state);
+        jRadioButtonMem2.setEnabled(state);
+        jRadioButtonMem3.setEnabled(state);
+        jRadioButtonPr0.setEnabled(state);
+        jRadioButtonPr1.setEnabled(state);
+        jRadioButtonPr2.setEnabled(state);
+        jRadioButtonPr3.setEnabled(state);
+        jCheckBoxOp0.setEnabled(state);
+        jCheckBoxOp1.setEnabled(state);
+        jCheckBoxOp2.setEnabled(state);
+        jCheckBoxOp3.setEnabled(state);
+    }
+    
+    public void confBasica(){
+        jRadioButtonDisc1.setSelected(true);
+        jRadioButtonMem3.setSelected(true);
+        jRadioButtonGra0.setSelected(true);
+        jRadioButtonPr0.setSelected(true);
+        jCheckBoxOp0.setSelected(true);
+        jCheckBoxOp1.setSelected(false);
+        jCheckBoxOp2.setSelected(true);
+        jCheckBoxOp3.setSelected(false);
+    }
+    
+    public void iniciar(){
+        
+        botonera(true);
+        confBasica();
+        jComboBoxLocal.setEnabled(true);
+        jButtonAdd.setEnabled(true);
+        jButtonBuscar.setEnabled(true);
+        
+    }
+    
+    public void anadir(){
+        Venta venta = new Venta();
+        String nombre = jTextFieldNombre.getText().toString();
+        int pr = 0, mem = 0, disc = 0, gra = 0;
+        
+        if(jRadioButtonPr0.isSelected()){
+            pr = 0;
+        }
+        else {
+            if(jRadioButtonPr1.isSelected()){
+                pr =1;
+            }
+            else{
+                if(jRadioButtonPr2.isSelected()){
+                    pr = 2;
+                }
+                else{
+                    if(jRadioButtonPr3.isSelected()){
+                        pr = 3;
+                    }
+                }
+            }
+        }
+        
+         if(jRadioButtonDisc0.isSelected()){
+            disc = 0;
+        }
+        else {
+            if(jRadioButtonDisc1.isSelected()){
+                disc =1;
+            }
+            else{
+                if(jRadioButtonDisc2.isSelected()){
+                    disc = 2;
+                }
+                else{
+                    if(jRadioButtonDisc3.isSelected()){
+                        disc = 3;
+                    }
+                }
+            }
+        }
+        
+        if(jRadioButtonMem0.isSelected()){
+            mem = 0;
+        }
+        else {
+            if(jRadioButtonMem1.isSelected()){
+                mem =1;
+            }
+            else{
+                if(jRadioButtonMem2.isSelected()){
+                    mem = 2;
+                }
+                else{
+                    if(jRadioButtonMem3.isSelected()){
+                        mem = 3;
+                    }
+                }
+            }
+        }
+        
+         if(jRadioButtonGra0.isSelected()){
+            gra = 0;
+        }
+        else {
+            if(jRadioButtonGra1.isSelected()){
+                gra =1;
+            }
+            else{
+                if(jRadioButtonGra2.isSelected()){
+                    gra = 2;
+                }
+                else{
+                    if(jRadioButtonGra3.isSelected()){
+                        gra = 3;
+                    }
+                }
+            }
+        }
+         
+        boolean[] checks = {jCheckBoxOp0.isSelected(),jCheckBoxOp1.isSelected(),jCheckBoxOp2.isSelected(),jCheckBoxOp3.isSelected(),};
+        
+        venta.setNombre(nombre);
+        venta.setChecks(checks);
+        int[] opciones = {pr,mem,disc,gra};
+        venta.setOpciones(opciones);
+        
+        ventas.add(venta);
+        
+    }
+ 
+    public ArrayList<Venta> ventas;
+    
 }
