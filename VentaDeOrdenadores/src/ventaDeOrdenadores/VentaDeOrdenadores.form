@@ -240,6 +240,7 @@
           <ComponentRef name="buttonGroupProc"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Intel i7-6700K"/>
+        <Property name="actionCommand" type="java.lang.String" value="0"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
@@ -252,7 +253,7 @@
           <ComponentRef name="buttonGroupProc"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Intel i5-6600K"/>
-        <Property name="actionCommand" type="java.lang.String" value=""/>
+        <Property name="actionCommand" type="java.lang.String" value="1"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -262,6 +263,7 @@
           <ComponentRef name="buttonGroupProc"/>
         </Property>
         <Property name="text" type="java.lang.String" value="AMD AD7300"/>
+        <Property name="actionCommand" type="java.lang.String" value="2"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -271,6 +273,7 @@
           <ComponentRef name="buttonGroupProc"/>
         </Property>
         <Property name="text" type="java.lang.String" value="AMD A4- 3400"/>
+        <Property name="actionCommand" type="java.lang.String" value="3"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -290,6 +293,7 @@
           <ComponentRef name="buttonGroupMem"/>
         </Property>
         <Property name="text" type="java.lang.String" value="4.0 Gb"/>
+        <Property name="actionCommand" type="java.lang.String" value="0"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -299,6 +303,7 @@
           <ComponentRef name="buttonGroupMem"/>
         </Property>
         <Property name="text" type="java.lang.String" value="8.0 Gb"/>
+        <Property name="actionCommand" type="java.lang.String" value="1"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -308,6 +313,7 @@
           <ComponentRef name="buttonGroupMem"/>
         </Property>
         <Property name="text" type="java.lang.String" value="16.0 Gb"/>
+        <Property name="actionCommand" type="java.lang.String" value="2"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -317,6 +323,7 @@
           <ComponentRef name="buttonGroupMem"/>
         </Property>
         <Property name="text" type="java.lang.String" value="32.0 Gb"/>
+        <Property name="actionCommand" type="java.lang.String" value="3"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -326,6 +333,7 @@
           <ComponentRef name="buttonGroupGraf"/>
         </Property>
         <Property name="text" type="java.lang.String" value="AMD Radeon R9"/>
+        <Property name="actionCommand" type="java.lang.String" value="0"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
@@ -338,6 +346,7 @@
           <ComponentRef name="buttonGroupGraf"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Nvidia GTX 1080"/>
+        <Property name="actionCommand" type="java.lang.String" value="2"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -347,6 +356,7 @@
           <ComponentRef name="buttonGroupGraf"/>
         </Property>
         <Property name="text" type="java.lang.String" value="AMD Radeon R7"/>
+        <Property name="actionCommand" type="java.lang.String" value="1"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -361,6 +371,7 @@
           <ComponentRef name="buttonGroupGraf"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Nvidia Titan"/>
+        <Property name="actionCommand" type="java.lang.String" value="3"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -375,6 +386,7 @@
           <ComponentRef name="buttonGroupDisc"/>
         </Property>
         <Property name="text" type="java.lang.String" value="650 GB"/>
+        <Property name="actionCommand" type="java.lang.String" value="0"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
@@ -387,6 +399,7 @@
           <ComponentRef name="buttonGroupDisc"/>
         </Property>
         <Property name="text" type="java.lang.String" value="1 TB"/>
+        <Property name="actionCommand" type="java.lang.String" value="1"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -396,6 +409,7 @@
           <ComponentRef name="buttonGroupDisc"/>
         </Property>
         <Property name="text" type="java.lang.String" value="3 TB"/>
+        <Property name="actionCommand" type="java.lang.String" value="2"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -405,6 +419,7 @@
           <ComponentRef name="buttonGroupDisc"/>
         </Property>
         <Property name="text" type="java.lang.String" value="10 TB"/>
+        <Property name="actionCommand" type="java.lang.String" value="3"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -456,6 +471,9 @@
         <Property name="text" type="java.lang.String" value="Buscar"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBuscarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonEliminar">
       <Properties>
@@ -463,6 +481,9 @@
         <Property name="text" type="java.lang.String" value="Eliminar"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEliminarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonSalir">
       <Properties>
@@ -478,6 +499,9 @@
         <Property name="mnemonic" type="int" value="99"/>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
@@ -521,6 +545,9 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jListResultMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

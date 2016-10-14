@@ -20,6 +20,7 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
     public VentaDeOrdenadores() {
         initComponents();
         jTextFieldNombre.grabFocus();
+        ventas = new ArrayList<Venta>();
     }
 
     /**
@@ -79,6 +80,7 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
 
         buttonGroupProc.add(jRadioButtonPr0);
         jRadioButtonPr0.setText("Intel i7-6700K");
+        jRadioButtonPr0.setActionCommand("0");
         jRadioButtonPr0.setEnabled(false);
         jRadioButtonPr0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,15 +90,17 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
 
         buttonGroupProc.add(jRadioButtonPr1);
         jRadioButtonPr1.setText("Intel i5-6600K");
-        jRadioButtonPr1.setActionCommand("");
+        jRadioButtonPr1.setActionCommand("1");
         jRadioButtonPr1.setEnabled(false);
 
         buttonGroupProc.add(jRadioButtonPr2);
         jRadioButtonPr2.setText("AMD AD7300");
+        jRadioButtonPr2.setActionCommand("2");
         jRadioButtonPr2.setEnabled(false);
 
         buttonGroupProc.add(jRadioButtonPr3);
         jRadioButtonPr3.setText("AMD A4- 3400");
+        jRadioButtonPr3.setActionCommand("3");
         jRadioButtonPr3.setEnabled(false);
 
         jLabel1.setText("Procesador");
@@ -105,22 +109,27 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
 
         buttonGroupMem.add(jRadioButtonMem0);
         jRadioButtonMem0.setText("4.0 Gb");
+        jRadioButtonMem0.setActionCommand("0");
         jRadioButtonMem0.setEnabled(false);
 
         buttonGroupMem.add(jRadioButtonMem1);
         jRadioButtonMem1.setText("8.0 Gb");
+        jRadioButtonMem1.setActionCommand("1");
         jRadioButtonMem1.setEnabled(false);
 
         buttonGroupMem.add(jRadioButtonMem2);
         jRadioButtonMem2.setText("16.0 Gb");
+        jRadioButtonMem2.setActionCommand("2");
         jRadioButtonMem2.setEnabled(false);
 
         buttonGroupMem.add(jRadioButtonMem3);
         jRadioButtonMem3.setText("32.0 Gb");
+        jRadioButtonMem3.setActionCommand("3");
         jRadioButtonMem3.setEnabled(false);
 
         buttonGroupGraf.add(jRadioButtonGra0);
         jRadioButtonGra0.setText("AMD Radeon R9");
+        jRadioButtonGra0.setActionCommand("0");
         jRadioButtonGra0.setEnabled(false);
         jRadioButtonGra0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,22 +139,26 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
 
         buttonGroupGraf.add(jRadioButtonGra2);
         jRadioButtonGra2.setText("Nvidia GTX 1080");
+        jRadioButtonGra2.setActionCommand("2");
         jRadioButtonGra2.setEnabled(false);
 
         buttonGroupGraf.add(jRadioButtonGra1);
         jRadioButtonGra1.setText("AMD Radeon R7");
+        jRadioButtonGra1.setActionCommand("1");
         jRadioButtonGra1.setEnabled(false);
 
         jLabel3.setText("Gráfica");
 
         buttonGroupGraf.add(jRadioButtonGra3);
         jRadioButtonGra3.setText("Nvidia Titan");
+        jRadioButtonGra3.setActionCommand("3");
         jRadioButtonGra3.setEnabled(false);
 
         jLabel4.setText("Disco Duro");
 
         buttonGroupDisc.add(jRadioButtonDisc0);
         jRadioButtonDisc0.setText("650 GB");
+        jRadioButtonDisc0.setActionCommand("0");
         jRadioButtonDisc0.setEnabled(false);
         jRadioButtonDisc0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,14 +168,17 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
 
         buttonGroupDisc.add(jRadioButtonDisc1);
         jRadioButtonDisc1.setText("1 TB");
+        jRadioButtonDisc1.setActionCommand("1");
         jRadioButtonDisc1.setEnabled(false);
 
         buttonGroupDisc.add(jRadioButtonDisc2);
         jRadioButtonDisc2.setText("3 TB");
+        jRadioButtonDisc2.setActionCommand("2");
         jRadioButtonDisc2.setEnabled(false);
 
         buttonGroupDisc.add(jRadioButtonDisc3);
         jRadioButtonDisc3.setText("10 TB");
+        jRadioButtonDisc3.setActionCommand("3");
         jRadioButtonDisc3.setEnabled(false);
 
         jLabel5.setText("Opciones:");
@@ -196,10 +212,20 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         jButtonBuscar.setMnemonic('b');
         jButtonBuscar.setText("Buscar");
         jButtonBuscar.setEnabled(false);
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
+            }
+        });
 
         jButtonEliminar.setMnemonic('e');
         jButtonEliminar.setText("Eliminar");
         jButtonEliminar.setEnabled(false);
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
+            }
+        });
 
         jButtonSalir.setMnemonic('s');
         jButtonSalir.setText("Salir");
@@ -211,6 +237,11 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
 
         jButtonCancel.setMnemonic('c');
         jButtonCancel.setText("Cancelar");
+        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Nombre del cliente:");
 
@@ -225,6 +256,11 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
             }
         });
 
+        jListResult.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListResultMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jListResult);
 
         jLabel8.setText("Lista de clientes:");
@@ -410,7 +446,7 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
     private void jTextFieldNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNombreKeyPressed
         
         if(evt.getKeyCode()==10){
-            if(jTextFieldNombre.getText().matches("[A-Za-z\\s]+")){
+            if(jTextFieldNombre.getText().matches("[A-Za-zñÑºªáéíóúÁÉÍÓÚ\\s]+")){
                 iniciar();
                 jComboBoxLocal.grabFocus();
             }
@@ -431,10 +467,26 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         anadir();
         Vector<String> aux = new Vector();
         for(int i =0; i<ventas.size();i++){
-            aux.add(ventas.indexOf(i).getNombre());
+            aux.add(ventas.get(i).getNombre());
         }
-        jListResult.setListData(null);
+        jListResult.setListData(aux);
     }//GEN-LAST:event_jButtonAddActionPerformed
+
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
+        cancelar();
+    }//GEN-LAST:event_jButtonCancelActionPerformed
+
+    private void jListResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListResultMouseClicked
+        seleccionarVenta(jListResult.getAnchorSelectionIndex());
+    }//GEN-LAST:event_jListResultMouseClicked
+
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        eliminar(jListResult.getAnchorSelectionIndex());
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
+
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        buscar(0,jTextFieldNombre.getText());
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -548,6 +600,7 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         jCheckBoxOp1.setSelected(false);
         jCheckBoxOp2.setSelected(true);
         jCheckBoxOp3.setSelected(false);
+        jComboBoxLocal.setSelectedIndex(0);
     }
     
     public void iniciar(){
@@ -557,100 +610,157 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         jComboBoxLocal.setEnabled(true);
         jButtonAdd.setEnabled(true);
         jButtonBuscar.setEnabled(true);
+        jListResult.repaint();
         
+    }
+    
+    public void cancelar(){
+        botonera(false);
+        jComboBoxLocal.setEnabled(false);
+        jButtonAdd.setEnabled(false);
+        jButtonBuscar.setEnabled(false);
+        jButtonEliminar.setEnabled(false);
+        jTextFieldNombre.grabFocus();
+        jTextFieldNombre.setText("");
     }
     
     public void anadir(){
         Venta venta = new Venta();
-        String nombre = jTextFieldNombre.getText().toString();
+        String nombre = jTextFieldNombre.getText();
+        int local = jComboBoxLocal.getSelectedIndex();
         int pr = 0, mem = 0, disc = 0, gra = 0;
         
-        if(jRadioButtonPr0.isSelected()){
-            pr = 0;
-        }
-        else {
-            if(jRadioButtonPr1.isSelected()){
-                pr =1;
-            }
-            else{
-                if(jRadioButtonPr2.isSelected()){
-                    pr = 2;
-                }
-                else{
-                    if(jRadioButtonPr3.isSelected()){
-                        pr = 3;
-                    }
-                }
-            }
-        }
+        pr = Integer.parseInt(buttonGroupProc.getSelection().getActionCommand());
+        mem = Integer.parseInt(buttonGroupMem.getSelection().getActionCommand());
+        disc = Integer.parseInt(buttonGroupDisc.getSelection().getActionCommand());
+        gra = Integer.parseInt(buttonGroupGraf.getSelection().getActionCommand());
         
-         if(jRadioButtonDisc0.isSelected()){
-            disc = 0;
-        }
-        else {
-            if(jRadioButtonDisc1.isSelected()){
-                disc =1;
-            }
-            else{
-                if(jRadioButtonDisc2.isSelected()){
-                    disc = 2;
-                }
-                else{
-                    if(jRadioButtonDisc3.isSelected()){
-                        disc = 3;
-                    }
-                }
-            }
-        }
-        
-        if(jRadioButtonMem0.isSelected()){
-            mem = 0;
-        }
-        else {
-            if(jRadioButtonMem1.isSelected()){
-                mem =1;
-            }
-            else{
-                if(jRadioButtonMem2.isSelected()){
-                    mem = 2;
-                }
-                else{
-                    if(jRadioButtonMem3.isSelected()){
-                        mem = 3;
-                    }
-                }
-            }
-        }
-        
-         if(jRadioButtonGra0.isSelected()){
-            gra = 0;
-        }
-        else {
-            if(jRadioButtonGra1.isSelected()){
-                gra =1;
-            }
-            else{
-                if(jRadioButtonGra2.isSelected()){
-                    gra = 2;
-                }
-                else{
-                    if(jRadioButtonGra3.isSelected()){
-                        gra = 3;
-                    }
-                }
-            }
-        }
-         
-        boolean[] checks = {jCheckBoxOp0.isSelected(),jCheckBoxOp1.isSelected(),jCheckBoxOp2.isSelected(),jCheckBoxOp3.isSelected(),};
+                
+        boolean[] checks = {jCheckBoxOp0.isSelected(),jCheckBoxOp1.isSelected(),jCheckBoxOp2.isSelected(),jCheckBoxOp3.isSelected()};
         
         venta.setNombre(nombre);
         venta.setChecks(checks);
         int[] opciones = {pr,mem,disc,gra};
         venta.setOpciones(opciones);
+        venta.setLocalidad(local);
         
         ventas.add(venta);
+        cancelar();
         
     }
+    
+    public void seleccionarVenta(int index){
+        jTextFieldNombre.setText(ventas.get(index).getNombre());
+        jComboBoxLocal.setSelectedIndex(ventas.get(index).getLocalidad());
+        switch(ventas.get(index).getOpciones()[0]){
+            case 0:
+                jRadioButtonPr0.setSelected(true);
+                break;
+            case 1:
+                jRadioButtonPr1.setSelected(true);
+                break;
+            case 2:
+                jRadioButtonPr2.setSelected(true);
+                break;
+            case 3:
+                jRadioButtonPr3.setSelected(true);
+                break;
+        }
+        switch(ventas.get(index).getOpciones()[1]){
+            case 0:
+                jRadioButtonMem0.setSelected(true);
+                break;
+            case 1:
+                jRadioButtonMem1.setSelected(true);
+                break;
+            case 2:
+                jRadioButtonMem2.setSelected(true);
+                break;
+            case 3:
+                jRadioButtonMem3.setSelected(true);
+                break;
+        }
+        switch(ventas.get(index).getOpciones()[2]){
+            case 0:
+                jRadioButtonDisc0.setSelected(true);
+                break;
+            case 1:
+                jRadioButtonDisc1.setSelected(true);
+                break;
+            case 2:
+                jRadioButtonDisc2.setSelected(true);
+                break;
+            case 3:
+                jRadioButtonDisc3.setSelected(true);
+                break;
+        }
+        switch(ventas.get(index).getOpciones()[3]){
+            case 0:
+                jRadioButtonGra0.setSelected(true);
+                break;
+            case 1:
+                jRadioButtonGra1.setSelected(true);
+                break;
+            case 2:
+                jRadioButtonGra2.setSelected(true);
+                break;
+            case 3:
+                jRadioButtonGra3.setSelected(true);
+                break;
+        }
+        jCheckBoxOp0.setSelected(ventas.get(index).getChecks()[0]);
+        jCheckBoxOp1.setSelected(ventas.get(index).getChecks()[1]);
+        jCheckBoxOp2.setSelected(ventas.get(index).getChecks()[2]);
+        jCheckBoxOp3.setSelected(ventas.get(index).getChecks()[3]);
+        
+        botonera(true);
+        jButtonEliminar.setEnabled(true);
+        jButtonAdd.setEnabled(false);
+        jButtonBuscar.setEnabled(false);
+        
+    }
+    
+    public void eliminar(int index){
+        if(javax.swing.JOptionPane.showConfirmDialog(null, "Seguro que desea"
+                + "eliminar la venta", "Confirmación de Usuario", 
+                javax.swing.JOptionPane.OK_CANCEL_OPTION) == 0){
+                ventas.remove(index);
+
+            Vector<String> aux = new Vector();
+            for(int i =0; i<ventas.size();i++){
+                    aux.add(ventas.get(i).getNombre());
+            }
+            jListResult.setListData(aux);
+
+            iniciar();
+        }
+        
+        cancelar();
+        
+    }
+    
+    public void buscar(int inicio, String nombre){
+        for(int i = inicio; i< ventas.size();i++){
+            if(ventas.get(i).getNombre().equals(nombre)){
+                jListResult.setSelectedIndex(i);
+                for(int j = i; j < ventas.size();j++){
+                    if(ventas.get(j).getNombre().equals(nombre)){
+                        if((javax.swing.JOptionPane.showConfirmDialog(null,
+                           "Tiene más de una entrada, ¿buscar siguiente?",
+                           "Confirmación de Usuario", javax.swing.JOptionPane.OK_CANCEL_OPTION) == 0))
+                            buscar(j,nombre);
+                        else
+                            break;
+                        /*
+                            MAAAAAL BUCLE INFINITOOOOOOOOOOOOOOO
+                        
+                        */
+                    }
+                }
+            }
+        }
+    }
+    
  
     public ArrayList<Venta> ventas;
     

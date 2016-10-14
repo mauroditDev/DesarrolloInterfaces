@@ -13,11 +13,13 @@ public class Venta {
     private String nombre;
     private int[] opciones;
     private boolean[] checks;
+    private int localidad;
     
     public Venta(){
         nombre = "";
         opciones = new int[4];
         checks = new boolean[4];
+        localidad = 0;
     }
 
     public String getNombre() {
@@ -50,6 +52,14 @@ public class Venta {
 
     public void setChecks(boolean[] checks) {
         this.checks = checks;
+    }
+    
+    public void setLocalidad(int localidad){
+        this.localidad = localidad;
+    }
+    
+    public int getLocalidad(){
+        return this.localidad;
     }
     
     
