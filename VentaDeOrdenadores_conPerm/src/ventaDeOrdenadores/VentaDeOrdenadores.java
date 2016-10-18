@@ -5,10 +5,18 @@
  */
 package ventaDeOrdenadores;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.AbstractButton;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -75,11 +83,12 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jListResult = new javax.swing.JList();
         jLabel8 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Venta de Ordenadores");
         setMinimumSize(new java.awt.Dimension(750, 410));
-        setPreferredSize(new java.awt.Dimension(750, 410));
         setResizable(false);
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -322,6 +331,20 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         jLabel8.setText("Lista de clientes:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(352, 14, -1, -1));
 
+        jButton1.setMnemonic('m');
+        jButton1.setText("Mostrar Ventas");
+        jButton1.setActionCommand("Mostrar Ventas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 380, 160, 30));
+
+        jButton2.setMnemonic('g');
+        jButton2.setText("Guardar Ventas");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 380, 170, 30));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -358,6 +381,12 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldNombreKeyPressed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
+        if(ventas.size()>0){
+            if(javax.swing.JOptionPane.showConfirmDialog(null, "Tiene cambios sin guardar, ¿desea guardarlos?"
+                    ,"Advertencia", javax.swing.JOptionPane.OK_OPTION)==0){
+                guardar();
+            }
+        }
         System.exit(0);
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
@@ -402,6 +431,10 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         
         jTextFieldNombre.setEnabled(false);
     }//GEN-LAST:event_jListResultFocusGained
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -620,6 +653,95 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         
         
     }
+    
+    public void guardar(){
+        if(ventas.size()>0){
+            try{
+                FileOutputStream save = new FileOutputStream("ventas.dat",true);
+                DataOutputStream data = new DataOutputStream(save);
+                for(int i = 0; i < ventas.size(); i++){
+                   data.writeUTF(ventas.get(i).getNombre());
+                   data.writeInt(ventas.get(i).getLocalidad());
+                   for(int j = 0; j < ventas.get(i).getOpciones().length; j++){
+                       data.writeInt(ventas.get(i).getOpciones(j));
+                   }
+                   for(int j = 0; j < ventas.get(i).getChecks().length;j++){
+                       data.writeBoolean(ventas.get(i).getChecks(j));
+                   }
+                }
+                
+                ventas.clear();
+                Vector<String> aux = new Vector();
+                jListResult.setListData(aux);
+                
+                data.close();
+                save.close();
+            }
+            catch(IOException ex){
+                javax.swing.JOptionPane.showConfirmDialog(null,
+                           "Error al guardar: " + ex.getMessage() + "\nAvise a Soporte",
+                           "Error!", javax.swing.JOptionPane.PLAIN_MESSAGE);
+            }
+            catch(Exception ex){
+                javax.swing.JOptionPane.showConfirmDialog(null,
+                           "Error al guardar: " + ex.getMessage() + "\nAvise a Soporte",
+                           "Error!", javax.swing.JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+        else{
+            javax.swing.JOptionPane.showConfirmDialog(null,
+                           "Lista vacía: Nada que guardar",
+                           "Información", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        }
+    }
+    
+    public void mostrarGuardadas(){
+        try{
+            FileInputStream load = new FileInputStream("ventas.dat");
+            DataInputStream data = new DataInputStream(load);
+            boolean cont = true;
+            try{
+                while(cont){
+                Venta aux = new Venta();
+                aux.setNombre(data.readUTF());
+                aux.setLocalidad(data.readInt());
+                int[] opciones = new int[4];
+                for(int i = 0; i<4;i++){
+                    opciones[i]=data.readInt();
+                }
+                aux.setOpciones(opciones);
+                boolean[] checks = new boolean[4];
+                for(int i = 0; i < checks.length; i++){
+                    checks[i] = data.readBoolean();
+                }
+                aux.setChecks(checks);
+                ventas.add(aux);
+                seleccionarVenta(ventas.indexOf(aux));
+                ventas.remove(aux);
+                
+                cont = (javax.swing.JOptionPane.showConfirmDialog(null, 
+                        "¿Desea ver el siguiente cliente?","Selección",
+                        JOptionPane.YES_NO_OPTION)==0);
+                }
+                data.close();
+                load.close();
+            }catch(EOFException eof){
+                javax.swing.JOptionPane.showConfirmDialog(null, "No hay más entradas"
+                        ,"Información",javax.swing.JOptionPane.PLAIN_MESSAGE);
+                data.close();
+                load.close();
+            }
+            
+        }catch(FileNotFoundException fnf){
+            javax.swing.JOptionPane.showConfirmDialog(null,
+                "No hay datos para mostrar","Sin datos",
+                javax.swing.JOptionPane.PLAIN_MESSAGE);
+        }catch(Exception ex){
+            javax.swing.JOptionPane.showConfirmDialog(null,
+                "Error al guardar: " + ex.getMessage() + "\nAvise a Soporte",
+                "Error!", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        }
+    }
  
     public ArrayList<Venta> ventas;
     
@@ -628,6 +750,8 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupGraf;
     private javax.swing.ButtonGroup buttonGroupMem;
     private javax.swing.ButtonGroup buttonGroupProc;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonCancel;
