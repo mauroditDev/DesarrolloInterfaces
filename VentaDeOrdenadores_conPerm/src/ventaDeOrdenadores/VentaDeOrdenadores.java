@@ -83,8 +83,8 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jListResult = new javax.swing.JList();
         jLabel8 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonMostrar = new javax.swing.JButton();
+        jButtonGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Venta de Ordenadores");
@@ -331,19 +331,23 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         jLabel8.setText("Lista de clientes:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(352, 14, -1, -1));
 
-        jButton1.setMnemonic('m');
-        jButton1.setText("Mostrar Ventas");
-        jButton1.setActionCommand("Mostrar Ventas");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonMostrar.setMnemonic('m');
+        jButtonMostrar.setText("Mostrar Ventas");
+        jButtonMostrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonMostrarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 380, 160, 30));
+        getContentPane().add(jButtonMostrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 380, 160, 30));
 
-        jButton2.setMnemonic('g');
-        jButton2.setText("Guardar Ventas");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 380, 170, 30));
+        jButtonGuardar.setMnemonic('g');
+        jButtonGuardar.setText("Guardar Ventas");
+        jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 380, 170, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -373,7 +377,8 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
                 jComboBoxLocal.grabFocus();
             }
             else{
-                javax.swing.JOptionPane.showConfirmDialog(null, "nombre inválido", "Formulario incorrecto", 
+                javax.swing.JOptionPane.showConfirmDialog(null,
+                        "nombre inválido", "Formulario incorrecto", 
                     javax.swing.JOptionPane.PLAIN_MESSAGE);
             }
         }
@@ -382,7 +387,8 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
         if(ventas.size()>0){
-            if(javax.swing.JOptionPane.showConfirmDialog(null, "Tiene cambios sin guardar, ¿desea guardarlos?"
+            if(javax.swing.JOptionPane.showConfirmDialog(null,
+                    "Tiene cambios sin guardar, ¿desea guardarlos?"
                     ,"Advertencia", javax.swing.JOptionPane.OK_OPTION)==0){
                 guardar();
             }
@@ -432,9 +438,20 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         jTextFieldNombre.setEnabled(false);
     }//GEN-LAST:event_jListResultFocusGained
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButtonMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarActionPerformed
+        mostrarGuardadas();
+    }//GEN-LAST:event_jButtonMostrarActionPerformed
+
+    private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
+        if(ventas.size() > 0)
+            guardar();
+        else{
+            javax.swing.JOptionPane.showConfirmDialog(null,
+                    "La lista está vacía", "Lista Vacía", 
+                    javax.swing.JOptionPane.PLAIN_MESSAGE);
+            cancelar();
+        }
+    }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -540,7 +557,9 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
         gra = Integer.parseInt(buttonGroupGraf.getSelection().getActionCommand());
         
                 
-        boolean[] checks = {jCheckBoxOp0.isSelected(),jCheckBoxOp1.isSelected(),jCheckBoxOp2.isSelected(),jCheckBoxOp3.isSelected()};
+        boolean[] checks = {jCheckBoxOp0.isSelected(),
+            jCheckBoxOp1.isSelected(),jCheckBoxOp2.isSelected(),
+            jCheckBoxOp3.isSelected()};
         
         venta.setNombre(nombre);
         venta.setChecks(checks);
@@ -674,6 +693,7 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
                 Vector<String> aux = new Vector();
                 jListResult.setListData(aux);
                 
+                cancelar();
                 data.close();
                 save.close();
             }
@@ -681,17 +701,20 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showConfirmDialog(null,
                            "Error al guardar: " + ex.getMessage() + "\nAvise a Soporte",
                            "Error!", javax.swing.JOptionPane.PLAIN_MESSAGE);
+                cancelar();
             }
             catch(Exception ex){
                 javax.swing.JOptionPane.showConfirmDialog(null,
                            "Error al guardar: " + ex.getMessage() + "\nAvise a Soporte",
                            "Error!", javax.swing.JOptionPane.PLAIN_MESSAGE);
+                cancelar();
             }
         }
         else{
             javax.swing.JOptionPane.showConfirmDialog(null,
                            "Lista vacía: Nada que guardar",
                            "Información", javax.swing.JOptionPane.PLAIN_MESSAGE);
+            cancelar();
         }
     }
     
@@ -701,33 +724,42 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
             DataInputStream data = new DataInputStream(load);
             boolean cont = true;
             try{
+                String auxS = data.readUTF();
                 while(cont){
-                Venta aux = new Venta();
-                aux.setNombre(data.readUTF());
-                aux.setLocalidad(data.readInt());
-                int[] opciones = new int[4];
-                for(int i = 0; i<4;i++){
-                    opciones[i]=data.readInt();
+                    Venta aux = new Venta();
+                    
+                    if(auxS != null){
+                        aux.setNombre(auxS);
+                        aux.setLocalidad(data.readInt());
+                        int[] opciones = new int[4];
+                        for(int i = 0; i<4;i++){
+                            opciones[i]=data.readInt();
+                        }
+                        aux.setOpciones(opciones);
+                        boolean[] checks = new boolean[4];
+                        for(int i = 0; i < checks.length; i++){
+                            checks[i] = data.readBoolean();
+                        }
+                        aux.setChecks(checks);
+                        ventas.add(aux);
+                        seleccionarVenta(ventas.indexOf(aux));
+                        ventas.remove(aux);
+                        
+                        auxS = data.readUTF();
+
+                        cont = (javax.swing.JOptionPane.showConfirmDialog(null, 
+                                "¿Desea ver el siguiente cliente?","Selección",
+                                JOptionPane.YES_NO_OPTION)==0);
+                    }
                 }
-                aux.setOpciones(opciones);
-                boolean[] checks = new boolean[4];
-                for(int i = 0; i < checks.length; i++){
-                    checks[i] = data.readBoolean();
-                }
-                aux.setChecks(checks);
-                ventas.add(aux);
-                seleccionarVenta(ventas.indexOf(aux));
-                ventas.remove(aux);
-                
-                cont = (javax.swing.JOptionPane.showConfirmDialog(null, 
-                        "¿Desea ver el siguiente cliente?","Selección",
-                        JOptionPane.YES_NO_OPTION)==0);
-                }
+                cancelar();
                 data.close();
                 load.close();
             }catch(EOFException eof){
                 javax.swing.JOptionPane.showConfirmDialog(null, "No hay más entradas"
                         ,"Información",javax.swing.JOptionPane.PLAIN_MESSAGE);
+                
+                cancelar();
                 data.close();
                 load.close();
             }
@@ -736,10 +768,12 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
             javax.swing.JOptionPane.showConfirmDialog(null,
                 "No hay datos para mostrar","Sin datos",
                 javax.swing.JOptionPane.PLAIN_MESSAGE);
+                cancelar();
         }catch(Exception ex){
             javax.swing.JOptionPane.showConfirmDialog(null,
                 "Error al guardar: " + ex.getMessage() + "\nAvise a Soporte",
                 "Error!", javax.swing.JOptionPane.PLAIN_MESSAGE);
+            cancelar();
         }
     }
  
@@ -750,12 +784,12 @@ public class VentaDeOrdenadores extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupGraf;
     private javax.swing.ButtonGroup buttonGroupMem;
     private javax.swing.ButtonGroup buttonGroupProc;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonEliminar;
+    private javax.swing.JButton jButtonGuardar;
+    private javax.swing.JButton jButtonMostrar;
     private javax.swing.JButton jButtonSalir;
     private javax.swing.JCheckBox jCheckBoxOp0;
     private javax.swing.JCheckBox jCheckBoxOp1;
