@@ -11,6 +11,8 @@ import comprobacion.*;
  */
 public class MantenimientoClientes extends javax.swing.JDialog {
 
+    
+    
     //almaceno en un int el estado de la operación
     /*
     -1 : idle
@@ -20,6 +22,9 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     3 : consulta
     */
     private int estado;
+    //cliente guardado para operativa con DB
+    Clientes cli;
+    
     
     /**
      * Creates new form FormularioEntradaDatos
@@ -539,12 +544,8 @@ public class MantenimientoClientes extends javax.swing.JDialog {
  *  y llevar el foco al primer campo
  */
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
-        // pone todos los textos a un string vacío y los desactiva
-        setAll("");
-        ableAll(false);
-        //lleva el foco al primer campo
-        jTextFieldCodigo.setEnabled(true);
-        jTextFieldCodigo.grabFocus();
+        // llama a función para posición inicial
+        cancelar();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 /*
  * 
@@ -556,15 +557,23 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         //comprueba el codigo según estado
         if(evt.getKeyCode()==10){
             if(jTextFieldCodigo.getText().matches("[0-9a-zA-Z]*")){
-                if(jTextFieldCodigo.getText().length()<=6){
-                    while(jTextFieldCodigo.getText().length()<6){
-                        jTextFieldCodigo.setText("0".concat(jTextFieldCodigo.getText()));
-                    }
+                while(jTextFieldCodigo.getText().length()<6){
+                    jTextFieldCodigo.setText("0".concat(jTextFieldCodigo.getText()));
                 }
-                Comprobar.comprobarCod(jTextFieldCodigo.getText(),estado);
+                if(Comprobar.comprobarCod(jTextFieldCodigo.getText(),estado)){
+                    iniciar();
+                }
+                else{
+                    javax.swing.JOptionPane.showConfirmDialog(null,
+                        "Operación imposible, el código no es adecuado para la operación",
+                        "Formulario incorrecto", javax.swing.JOptionPane.PLAIN_MESSAGE);
+                }
             }
             else{
                 //TODO: Código inválido
+                javax.swing.JOptionPane.showConfirmDialog(null,
+                        "Código inválido", "Formulario incorrecto", 
+                    javax.swing.JOptionPane.PLAIN_MESSAGE);
             }
         }
         siguiente(evt.getKeyCode(),jTextFieldNIF);
@@ -616,30 +625,59 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextFieldFaxKeyPressed
     /**
      * función a realizar al apretar botón aceptar: debe validar todos los
-     * campos y llamar una ventana nueva si son válidos,
+     * campos y realizar acción en función del estado si son válidos,
      * si no son válidos llevará el foco al primer equivocado.
      * 
      */
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
-        //el campo código se verifica con sus condiciones particulares
-        if(jTextFieldCodigo.getText().length()<=6 && jTextFieldCodigo.getText().matches("[0-9a-zA-Z]*")){
-            while(jTextFieldCodigo.getText().length()<6){
-                jTextFieldCodigo.setText("0".concat(jTextFieldCodigo.getText()));
-            }
-            if(comprobarTodo()){
-                jTextFieldLetraNIF.setText(letraNIF(Integer.parseInt(jTextFieldNIF.getText())));
-                javax.swing.JOptionPane.showConfirmDialog(null, "Formulario insertado correctamente", "Formulario correcto", 
-                javax.swing.JOptionPane.PLAIN_MESSAGE);
-            }
-        }
-        else{
-            noValida(jTextFieldCodigo);
+        
+        switch(estado){
+            // Comprueba si el estado es un alta
+            case 0:
+                //chequea que todos los campos estén correctamente rellenados
+                if(comprobarTodo()){
+                    //rellena la letra del NIF
+                    jTextFieldLetraNIF.setText(
+                            letraNIF(Integer.parseInt(jTextFieldNIF.getText())));
+                    //almacena los datos en un objeto Cliente
+                    cli.codigo = jTextFieldCodigo.getText();
+                    cli.nif = jTextFieldNIF.getText()
+                            + jTextFieldLetraNIF.getText();
+                    cli.apellidos = jTextFieldApellidos.getText();
+                    cli.nombre = jTextFieldNombre.getText();
+                    cli.domicilio = jTextFieldDomicilio.getText();
+                    cli.codigo_postal = jTextFieldCP.getText();
+                    cli.localidad = jTextFieldLocalidad.getText();
+                    cli.telefono = jTextFieldTel.getText();
+                    cli.movil = jTextFieldMovil.getText();
+                    cli.fax = jTextFieldFax.getText();
+                    cli.email = jTextFieldEmail.getText();
+                    //genera un gestor para la DB
+                    GestorDB ges = new GestorDB();
+                    
+                    //comprueba si pudo realizarse la operación y alerta al 
+                    //usuario del resultado
+                    if(ges.altaCliente(cli))
+                        javax.swing.JOptionPane.showConfirmDialog(null,
+                        "Cliente insertado correctamente", "Formulario correcto", 
+                        javax.swing.JOptionPane.PLAIN_MESSAGE);
+                    else
+                        javax.swing.JOptionPane.showConfirmDialog(null,
+                        "Error al INSERTAR CLIENTE", "Error!", 
+                        javax.swing.JOptionPane.PLAIN_MESSAGE);
+                }
+            
         }
         
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
         // TODO add your handling code here:
+        cancelar();
+        //desactiva el campo código para forzar a elegir operación
+        jTextFieldCodigo.setEnabled(false);
+        //vuelve el estado a idle
+        estado = -1;
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jMenuItemVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVolverActionPerformed
@@ -830,6 +868,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         campo.selectAll();
     }
     
+    //función para conseguir la letra del dni a partid del número
     private static String letraNIF(Integer dni){
         String juegoCaracteres="TRWAGMYFPDXBNJZSQVHLCKE";
         int modulo = dni % 23;
@@ -837,6 +876,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         return letra.toString(); 
     }
     
+    //función para manejar todos los estados de enabled simultaneamente
     private void ableAll(boolean state){
         jTextFieldNombre.setEnabled(state);
         jTextFieldApellidos.setEnabled(state);
@@ -855,6 +895,34 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         jButtonAceptar.setEnabled(state);
         jButtonCancelar.setEnabled(state);
         jButtonSalir.setEnabled(state);
+        
+    }
+    
+    private void iniciar(){
+        switch(estado){
+            //comprueba que el estado es un alta
+            case 0:
+                //permite escribir en todos los campos y lleva el foco al primero
+                ableAll(true);
+                jTextFieldCodigo.setEnabled(false);
+                jTextFieldNIF.grabFocus();
+                break;
+            //comprueba que el estado es una baja
+            case 1:
+                
+        }
+    }
+    
+    private void cancelar(){
+        
+        //desactiva todos los campos
+        ableAll(false);
+        //vuelve al campo código
+        jTextFieldCodigo.setEnabled(true);
+        jTextFieldCodigo.grabFocus();
+        
+        //vacía todos los textos
+        setAll("");
         
     }
 

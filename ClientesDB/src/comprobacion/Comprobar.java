@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package comprobacion;
-
+import clientesdb.GestorDB;
+import java.util.ArrayList;
 /**
  *
  * @author alumno
@@ -42,18 +43,28 @@ public class Comprobar {
     
     public static boolean comprobarCod(String codigo, int estado){
         
+        GestorDB db = new GestorDB();
+        ArrayList<String> consulta = new ArrayList();
+        boolean res = false;
+        
         switch(estado){
             case 0:
-                return true;
+                consulta = db.getCodigos();
+                res = true;
+                for(int i = 0; i < consulta.size(); i++){
+                    if(codigo.equals(consulta.get(i)))
+                        res = false;
+                }
+                return res;
             case 1:
-                return true;
+                return res;
             case 2:
-                return true;
+                return res;
             case 3:
-                return true;
+                return res;
             
         }
-        return false;
+        return res;
         
     }
     

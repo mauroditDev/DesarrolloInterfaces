@@ -10,6 +10,7 @@ create table clientes(
 	apellidos varchar(35),
 	nombre varchar(15),
 	domicilio varchar(40),
+	localidad varchar(20),
 	codigo_postal varchar(5),
 	telefono varchar(9),
 	movil varchar(9),
