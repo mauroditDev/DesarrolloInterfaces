@@ -19,23 +19,23 @@ public class Comprobar {
                 return dato.matches("[0-9]{8}");
             case "Nombre":
                 if(dato.length()<=15)
-                    return dato.matches("[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\s]*");
+                    return dato.matches("[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\s]+");
             case "Apellidos":
                 if(dato.length()<=35)
-                    return dato.matches("[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\s-]*");
+                    return dato.matches("[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\s-]+");
             case "Domicilio":
                 if(dato.length()<=40)
-                    return dato.matches("[0-9a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\sºª/,-]*");
+                    return dato.matches("[0-9a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\sºª/,-]+");
             case "CP":
                 return dato.matches("[0-9]{5}");
             case "Localidad":
                 if(dato.length()<=20)
-                    return dato.matches("[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\s-]*");
+                    return dato.matches("[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\s-]+");
             case "Tel":
                 return dato.matches("[0-9]{9}");
             case "Email":
                 if(dato.length()<=20)
-                    return dato.matches("[0-9a-zA-Z.-]*@[0-9a-zA-Z.-]*");
+                    return dato.matches("[0-9a-zA-Z.-]+@[0-9a-zA-Z.-]+");
         }
         return false;
         
@@ -57,6 +57,12 @@ public class Comprobar {
                 }
                 return res;
             case 1:
+                consulta = db.getCodigos();
+                res = false;
+                for(int i = 0; i < consulta.size() && !res; i++){
+                    if(codigo.equals(consulta.get(i)))
+                        res = true;
+                }
                 return res;
             case 2:
                 return res;

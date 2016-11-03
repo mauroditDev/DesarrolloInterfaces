@@ -5,6 +5,7 @@
  */
 package clientesdb;
 import comprobacion.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author alumno
@@ -30,14 +31,20 @@ public class MantenimientoClientes extends javax.swing.JDialog {
      * Creates new form FormularioEntradaDatos
      */
     public MantenimientoClientes() {
+        
         initComponents();
+        estado = -1;
+        ableAll(false);
+        cli = new Clientes();
     }
     
     public MantenimientoClientes(javax.swing.JFrame parent, boolean modal){
         super(parent, modal);
+        
         initComponents();
         estado = -1;
         ableAll(false);
+        cli = new Clientes();
     }
 
     /**
@@ -290,10 +297,20 @@ public class MantenimientoClientes extends javax.swing.JDialog {
 
         jMenuItemAltas.setMnemonic('a');
         jMenuItemAltas.setText("Altas");
+        jMenuItemAltas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAltasActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemAltas);
 
         jMenuItemBajas.setMnemonic('b');
         jMenuItemBajas.setText("Bajas");
+        jMenuItemBajas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBajasActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemBajas);
 
         jMenuItemMods.setMnemonic('m');
@@ -367,58 +384,52 @@ public class MantenimientoClientes extends javax.swing.JDialog {
                                 .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel12))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextFieldFax)
+                                .addComponent(jTextFieldTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButtonAceptar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButtonCancelar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(12, 12, 12)
-                                        .addComponent(jLabel12)))
-                                .addContainerGap(187, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextFieldFax)
-                                    .addComponent(jTextFieldTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(132, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonAceptar)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jTextFieldCP, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonCancelar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5)
-                                .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jTextFieldLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jTextFieldApellidos, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jTextFieldCP, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel1)
+                                        .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jTextFieldLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextFieldApellidos, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jTextFieldNIF, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jTextFieldLetraNIF, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel3)
-                                                .addGap(114, 114, 114))
-                                            .addComponent(jTextFieldNombre))))
-                                .addComponent(jTextFieldDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
+                                        .addComponent(jLabel2)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jTextFieldNIF, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jTextFieldLetraNIF, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel3)
+                                            .addGap(114, 114, 114))
+                                        .addComponent(jTextFieldNombre))))
+                            .addComponent(jTextFieldDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -657,16 +668,28 @@ public class MantenimientoClientes extends javax.swing.JDialog {
                     
                     //comprueba si pudo realizarse la operación y alerta al 
                     //usuario del resultado
-                    if(ges.altaCliente(cli))
+                    if(ges.altaCliente(cli)){
                         javax.swing.JOptionPane.showConfirmDialog(null,
                         "Cliente insertado correctamente", "Formulario correcto", 
                         javax.swing.JOptionPane.PLAIN_MESSAGE);
+                        cancelar();
+                    }
                     else
                         javax.swing.JOptionPane.showConfirmDialog(null,
                         "Error al INSERTAR CLIENTE", "Error!", 
                         javax.swing.JOptionPane.PLAIN_MESSAGE);
                 }
-            
+                break;
+            case 1:
+                if(javax.swing.JOptionPane.showConfirmDialog(null, 
+                                "¿Seguro que desea eliminar?","Baja",
+                                JOptionPane.YES_NO_OPTION)==0){
+                    GestorDB ges = new GestorDB();
+                    ges.bajaCliente(jTextFieldCodigo.getText());
+                }
+                cancelar();
+                break;
+                
         }
         
     }//GEN-LAST:event_jButtonAceptarActionPerformed
@@ -684,6 +707,23 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         //vuelve a la ventana anterior
         dispose();
     }//GEN-LAST:event_jMenuItemVolverActionPerformed
+
+    private void jMenuItemAltasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltasActionPerformed
+        // pone el estado en 0: altas
+        estado = 0;
+        
+        // pone able al código
+        jTextFieldCodigo.setEnabled(true);
+        
+    }//GEN-LAST:event_jMenuItemAltasActionPerformed
+
+    private void jMenuItemBajasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBajasActionPerformed
+        // pone el estado en 1: bajas
+        estado = 1;
+        
+        // pone able al código
+        jTextFieldCodigo.setEnabled(true);
+    }//GEN-LAST:event_jMenuItemBajasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -898,6 +938,35 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         
     }
     
+    private void mostrar(String codigo){
+        
+        //llamamos a la función que realiza la consulta para rellenar cada campo
+        GestorDB db = new GestorDB();
+        jTextFieldNombre.setText(db.getField("nombre",codigo));
+        jTextFieldApellidos.setText(db.getField("apellidos",codigo));
+        jTextFieldCP.setText(db.getField("codigo_postal",codigo));
+        jTextFieldDomicilio.setText(db.getField("domicilio",codigo));
+        jTextFieldEmail.setText(db.getField("email",codigo));
+        jTextFieldFax.setText(db.getField("fax",codigo));
+        jTextFieldTel.setText(db.getField("telefono",codigo));
+        jTextFieldTotal.setText(db.getField("total_ventas",codigo));
+        jTextFieldLocalidad.setText(db.getField("localidad",codigo));
+        jTextFieldMovil.setText(db.getField("movil",codigo));
+        
+        //tratamos el caso especial del nif
+        String letra = db.getField("nif",codigo);
+        jTextFieldNIF.setText(letra.replaceAll("[A-Z]", ""));
+        letra = String.valueOf(letra.charAt(letra.length()-1));
+        jTextFieldLetraNIF.setText(letra);
+        
+    }
+    
+    private void ableBotones(boolean state){
+        jButtonAceptar.setEnabled(state);
+        jButtonCancelar.setEnabled(state);
+        jButtonSalir.setEnabled(state);
+    }
+    
     private void iniciar(){
         switch(estado){
             //comprueba que el estado es un alta
@@ -909,6 +978,11 @@ public class MantenimientoClientes extends javax.swing.JDialog {
                 break;
             //comprueba que el estado es una baja
             case 1:
+                //me muestra el cliente cuyo código he introducido
+                mostrar(jTextFieldCodigo.getText());
+                jTextFieldCodigo.setEnabled(false);
+                ableBotones(true);
+                break;
                 
         }
     }

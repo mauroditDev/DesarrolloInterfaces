@@ -53,26 +53,60 @@ public class GestorDB {
     }
     
     public boolean altaCliente(Clientes cl){
-        try{
+        try{     
             stmnt.executeUpdate("INSERT INTO clientes VALUES("
-                    + cl.codigo + ','
-                    + cl.nif + ','
-                    + cl.apellidos + ','
-                    + cl.nombre + ','
-                    + cl.domicilio + ','
-                    + cl.localidad + ','
-                    + cl.codigo_postal + ','
-                    + cl.telefono + ','
-                    + cl.movil + ','
-                    + cl.fax + ','
-                    + cl.email + ','
-                    + cl.total_ventas
-                    + ")");
+                    + '"' + cl.codigo + '"' + ','
+                    + '"' + cl.nif + '"' + ','
+                    + '"' + cl.apellidos + '"' + ','
+                    + '"' + cl.nombre + '"' + ','
+                    + '"' + cl.domicilio + '"' + ','
+                    + '"' + cl.localidad + '"' + ','
+                    + '"' + cl.codigo_postal + '"' + ','
+                    + '"' + cl.telefono + '"' + ','
+                    + '"' + cl.movil + '"' + ','
+                    + '"' + cl.fax + '"' + ','
+                    + '"' + cl.email + '"' + ','
+                    + '"' + cl.total_ventas + '"' 
+                    + ");");
+            con.commit();
         }catch(Exception e){
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+    
+    public boolean bajaCliente(String codigo){
+        try{
+            stmnt.executeUpdate("DELETE FROM clientes WHERE codigo="+codigo+";");
+            con.commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    
+    public String getField(String campo, String codigo){
+        try{
+            ResultSet rs = stmnt.executeQuery(
+                    "SELECT "+campo+" FROM clientes WHERE codigo="+codigo+";");
+            
+            while(rs.next()){
+                if(campo.equals("total_ventas")){
+                    float aux = rs.getFloat(1);
+                    return String.valueOf(aux);
+                }
+                return (rs.getString(1));
+            }
+            return ""; 
+            
+            
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return "";
+        }
     }
     
 }
