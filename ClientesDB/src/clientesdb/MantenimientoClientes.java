@@ -6,6 +6,7 @@
 package clientesdb;
 import comprobacion.*;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.view.JasperViewer;
 /**
  *
  * @author alumno
@@ -21,6 +22,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     1 : baja
     2 : modificacion
     3 : consulta
+    4 : consulta listada
     */
     private int estado;
     //cliente guardado para operativa con DB
@@ -42,7 +44,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         super(parent, modal);
         
         initComponents();
-        estado = -1;
+        estado(-1);
         ableAll(false);
         cli = new Clientes();
     }
@@ -94,9 +96,9 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         jMenu2 = new javax.swing.JMenu();
         jMenuItemConsulta = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItemCporCodigo = new javax.swing.JMenuItem();
+        jMenuItemCentreC = new javax.swing.JMenuItem();
+        jMenuItemGraf = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Formulario");
@@ -315,6 +317,11 @@ public class MantenimientoClientes extends javax.swing.JDialog {
 
         jMenuItemMods.setMnemonic('m');
         jMenuItemMods.setText("Modificación");
+        jMenuItemMods.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemModsActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemMods);
         jMenu1.add(jSeparator1);
 
@@ -334,21 +341,41 @@ public class MantenimientoClientes extends javax.swing.JDialog {
 
         jMenuItemConsulta.setMnemonic('c');
         jMenuItemConsulta.setText("por Código");
+        jMenuItemConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConsultaActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItemConsulta);
 
         jMenu3.setMnemonic('l');
         jMenu3.setText("Listados");
 
-        jMenuItem1.setMnemonic('c');
-        jMenuItem1.setText("Por Código");
-        jMenu3.add(jMenuItem1);
+        jMenuItemCporCodigo.setMnemonic('c');
+        jMenuItemCporCodigo.setText("Por Código");
+        jMenuItemCporCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCporCodigoActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItemCporCodigo);
 
-        jMenuItem2.setText("Entre Códigos");
-        jMenu3.add(jMenuItem2);
+        jMenuItemCentreC.setText("Entre Códigos");
+        jMenuItemCentreC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCentreCActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItemCentreC);
 
-        jMenuItem3.setMnemonic('g');
-        jMenuItem3.setText("Gráfico");
-        jMenu3.add(jMenuItem3);
+        jMenuItemGraf.setMnemonic('g');
+        jMenuItemGraf.setText("Gráfico");
+        jMenuItemGraf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGrafActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItemGraf);
 
         jMenu2.add(jMenu3);
 
@@ -567,7 +594,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     private void jTextFieldCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCodigoKeyPressed
         //comprueba el codigo según estado
         if(evt.getKeyCode()==10){
-            if(jTextFieldCodigo.getText().matches("[0-9a-zA-Z]*")){
+            if(jTextFieldCodigo.getText().matches("[0-9a-zA-Z]{1,6}")){
                 while(jTextFieldCodigo.getText().length()<6){
                     jTextFieldCodigo.setText("0".concat(jTextFieldCodigo.getText()));
                 }
@@ -681,12 +708,75 @@ public class MantenimientoClientes extends javax.swing.JDialog {
                 }
                 break;
             case 1:
+                //pide al usuario que confirme en un option pane
                 if(javax.swing.JOptionPane.showConfirmDialog(null, 
                                 "¿Seguro que desea eliminar?","Baja",
                                 JOptionPane.YES_NO_OPTION)==0){
+                    //llama a la operación de escritura
                     GestorDB ges = new GestorDB();
-                    ges.bajaCliente(jTextFieldCodigo.getText());
+                    //ejecuta la baja y verifica que se realizó correctamente
+                    if( ges.bajaCliente(jTextFieldCodigo.getText())){
+                            javax.swing.JOptionPane.showConfirmDialog(null,
+                            "Cliente eliminado correctamente", "Formulario correcto", 
+                            javax.swing.JOptionPane.PLAIN_MESSAGE);
+                            cancelar();
+                        }
+                        else{
+                            javax.swing.JOptionPane.showConfirmDialog(null,
+                            "Error al MODIFICAR CLIENTE", "Error!", 
+                            javax.swing.JOptionPane.PLAIN_MESSAGE);
+                        }
                 }
+                cancelar();
+                break;
+            case 2:
+                //pide al usuario que confirme en un option pane
+                if(javax.swing.JOptionPane.showConfirmDialog(null, 
+                                "¿Seguro que desea aplicar los cambios?","Baja",
+                                JOptionPane.YES_NO_OPTION)==0){
+                    //comprueba que los campos sean correctos
+                    if(comprobarTodo()){
+                        //rellena la letra del NIF
+                        jTextFieldLetraNIF.setText(
+                                letraNIF(Integer.parseInt(jTextFieldNIF.getText())));
+                        //almacena los datos en un objeto Cliente
+                        cli.codigo = jTextFieldCodigo.getText();
+                        cli.nif = jTextFieldNIF.getText()
+                                + jTextFieldLetraNIF.getText();
+                        cli.apellidos = jTextFieldApellidos.getText();
+                        cli.nombre = jTextFieldNombre.getText();
+                        cli.domicilio = jTextFieldDomicilio.getText();
+                        cli.codigo_postal = jTextFieldCP.getText();
+                        cli.localidad = jTextFieldLocalidad.getText();
+                        cli.telefono = jTextFieldTel.getText();
+                        cli.movil = jTextFieldMovil.getText();
+                        cli.fax = jTextFieldFax.getText();
+                        cli.email = jTextFieldEmail.getText();
+                        
+                        //lanza la secuencia del update y comprueba que se realizó sin errores
+                        GestorDB ges = new GestorDB();
+                        if(ges.modCliente(jTextFieldCodigo.getText(),cli)){
+                            javax.swing.JOptionPane.showConfirmDialog(null,
+                            "Cliente modificado correctamente", "Formulario correcto", 
+                            javax.swing.JOptionPane.PLAIN_MESSAGE);
+                            cancelar();
+                        }
+                        else{
+                            javax.swing.JOptionPane.showConfirmDialog(null,
+                            "Error al MODIFICAR CLIENTE", "Error!", 
+                            javax.swing.JOptionPane.PLAIN_MESSAGE);
+                        }
+                    }
+                }
+                break;
+            case 3:
+                cancelar();
+                break;
+            case 4:
+                GestorDB ges = new GestorDB();
+                JasperViewer jv = ges.ejecutarInforme(jTextFieldCodigo.getText(),
+                        jTextFieldCodigo.getText());
+                jv.setVisible(true);
                 cancelar();
                 break;
                 
@@ -700,7 +790,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         //desactiva el campo código para forzar a elegir operación
         jTextFieldCodigo.setEnabled(false);
         //vuelve el estado a idle
-        estado = -1;
+        estado(-1);
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jMenuItemVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVolverActionPerformed
@@ -710,20 +800,39 @@ public class MantenimientoClientes extends javax.swing.JDialog {
 
     private void jMenuItemAltasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltasActionPerformed
         // pone el estado en 0: altas
-        estado = 0;
-        
-        // pone able al código
-        jTextFieldCodigo.setEnabled(true);
+        estado(0);
         
     }//GEN-LAST:event_jMenuItemAltasActionPerformed
 
     private void jMenuItemBajasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBajasActionPerformed
         // pone el estado en 1: bajas
-        estado = 1;
-        
-        // pone able al código
-        jTextFieldCodigo.setEnabled(true);
+        estado(1);
     }//GEN-LAST:event_jMenuItemBajasActionPerformed
+
+    private void jMenuItemModsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModsActionPerformed
+        //pone el estado en 2: modificación
+        estado(2);
+    }//GEN-LAST:event_jMenuItemModsActionPerformed
+
+    private void jMenuItemConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultaActionPerformed
+        //pone el estado en 3: consulta
+        estado(3);
+    }//GEN-LAST:event_jMenuItemConsultaActionPerformed
+
+    private void jMenuItemCporCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCporCodigoActionPerformed
+        estado(4);
+    }//GEN-LAST:event_jMenuItemCporCodigoActionPerformed
+
+    private void jMenuItemCentreCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCentreCActionPerformed
+        Codigos codigos = new Codigos();
+        codigos.setVisible(true);
+    }//GEN-LAST:event_jMenuItemCentreCActionPerformed
+
+    private void jMenuItemGrafActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGrafActionPerformed
+        GestorDB ges = new GestorDB();
+        JasperViewer jv = ges.ejecutarPie();
+        jv.setVisible(true);
+    }//GEN-LAST:event_jMenuItemGrafActionPerformed
 
     /**
      * @param args the command line arguments
@@ -781,12 +890,12 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItemAltas;
     private javax.swing.JMenuItem jMenuItemBajas;
+    private javax.swing.JMenuItem jMenuItemCentreC;
     private javax.swing.JMenuItem jMenuItemConsulta;
+    private javax.swing.JMenuItem jMenuItemCporCodigo;
+    private javax.swing.JMenuItem jMenuItemGraf;
     private javax.swing.JMenuItem jMenuItemMods;
     private javax.swing.JMenuItem jMenuItemVolver;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -934,7 +1043,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         jTextFieldTotal.setEnabled(state);
         jButtonAceptar.setEnabled(state);
         jButtonCancelar.setEnabled(state);
-        jButtonSalir.setEnabled(state);
+        jButtonSalir.setEnabled(true);
         
     }
     
@@ -976,14 +1085,31 @@ public class MantenimientoClientes extends javax.swing.JDialog {
                 jTextFieldCodigo.setEnabled(false);
                 jTextFieldNIF.grabFocus();
                 break;
-            //comprueba que el estado es una baja
+            //comprueba que el estado es una baja o una consulta
             case 1:
+            case 3:
                 //me muestra el cliente cuyo código he introducido
                 mostrar(jTextFieldCodigo.getText());
                 jTextFieldCodigo.setEnabled(false);
                 ableBotones(true);
                 break;
-                
+            case 2:
+                //me muestra el cliente cuyo código he introducido.
+                mostrar(jTextFieldCodigo.getText());
+                //habilita todos los campos
+                ableAll(true);
+                //deshabilita el campo código
+                jTextFieldCodigo.setEnabled(false);
+                //lleva el foco al nif
+                jTextFieldNIF.grabFocus();
+                break;
+            case 4:
+                GestorDB ges = new GestorDB();
+                JasperViewer jv = ges.ejecutarInforme(jTextFieldCodigo.getText(),
+                        jTextFieldCodigo.getText());
+                jv.setVisible(true);
+                cancelar();
+                break;
         }
     }
     
@@ -998,6 +1124,43 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         //vacía todos los textos
         setAll("");
         
+    }
+    
+    private void estado(int state){
+        estado = state;
+        String titulo = "Mantenimiento Clientes";
+        jMenu1.setEnabled(true);
+        jMenu2.setEnabled(true);
+        switch(state){
+            case 0:
+                titulo += " - Alta";
+                jMenu1.setEnabled(false);
+                jMenu2.setEnabled(false);
+                break;
+            case 1:
+                titulo += " - Baja";
+                jMenu1.setEnabled(false);
+                jMenu2.setEnabled(false);
+                break;
+            case 2:
+                titulo += " - Modificación";
+                jMenu1.setEnabled(false);
+                jMenu2.setEnabled(false);
+                break;
+            case 3:
+                titulo += " - Consulta";
+                jMenu1.setEnabled(false);
+                jMenu2.setEnabled(false);
+                break;
+            case 4:
+                titulo += " - Consulta";
+                jMenu1.setEnabled(false);
+                jMenu2.setEnabled(false);
+                break;
+        }
+        this.setTitle(titulo);
+        if(estado != -1)
+            jTextFieldCodigo.setEnabled(true);
     }
 
 }

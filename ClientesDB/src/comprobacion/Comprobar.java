@@ -57,16 +57,15 @@ public class Comprobar {
                 }
                 return res;
             case 1:
+            case 2:
+            case 3:
+            case 4:
                 consulta = db.getCodigos();
                 res = false;
                 for(int i = 0; i < consulta.size() && !res; i++){
                     if(codigo.equals(consulta.get(i)))
                         res = true;
                 }
-                return res;
-            case 2:
-                return res;
-            case 3:
                 return res;
             
         }
