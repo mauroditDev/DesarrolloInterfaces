@@ -78,46 +78,61 @@
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="504" y="17" width="68" height="20" uuid="b14ab93c-14e2-47f0-b9aa-7ff48e5e0c5e"/>
+				<reportElement x="515" y="17" width="57" height="20" uuid="b14ab93c-14e2-47f0-b9aa-7ff48e5e0c5e"/>
 				<text><![CDATA[Total Ventas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="340" y="17" width="148" height="20" uuid="f15ed6c8-27e1-4e37-8dfe-06a29c19256c"/>
+				<reportElement x="367" y="16" width="148" height="20" uuid="f15ed6c8-27e1-4e37-8dfe-06a29c19256c"/>
 				<text><![CDATA[Email]]></text>
 			</staticText>
 			<line>
 				<reportElement x="2" y="36" width="569" height="1" uuid="e985da8a-314a-45a8-af63-c70d74b8d1e1"/>
 			</line>
 			<staticText>
-				<reportElement x="210" y="17" width="117" height="20" uuid="59cbed2f-4725-4fa4-8323-cb63cf9bcf0c"/>
+				<reportElement x="224" y="16" width="104" height="20" uuid="59cbed2f-4725-4fa4-8323-cb63cf9bcf0c"/>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="16" width="119" height="20" uuid="0ed6f8ec-90ef-4cac-b57b-6ec6feba6425"/>
+				<reportElement x="78" y="16" width="119" height="20" uuid="0ed6f8ec-90ef-4cac-b57b-6ec6feba6425"/>
 				<text><![CDATA[Apellidos]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="34" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<textField>
-				<reportElement x="84" y="6" width="119" height="16" uuid="25c5026f-fbce-4ebd-b4d0-9c6438e45014"/>
+				<reportElement x="78" y="6" width="142" height="16" uuid="25c5026f-fbce-4ebd-b4d0-9c6438e45014"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{apellidos}.toString()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="5" y="6" width="70" height="15" uuid="f83edc91-53b3-47d6-aff1-5ea772b67742"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{codigo}.toString()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="213" y="6" width="117" height="15" uuid="cc996c42-c00c-444e-a189-52a9ddb93be2"/>
+				<reportElement x="224" y="6" width="140" height="15" uuid="cc996c42-c00c-444e-a189-52a9ddb93be2"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}.toString()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="343" y="6" width="148" height="15" uuid="78dbc717-0607-442f-8027-539ffd592521"/>
+				<reportElement x="367" y="6" width="148" height="15" uuid="78dbc717-0607-442f-8027-539ffd592521"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{email}.toString()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="504" y="6" width="68" height="20" uuid="7a70cf74-5de6-4c22-b942-72f0032bf5cd"/>
+				<reportElement x="515" y="6" width="57" height="20" uuid="7a70cf74-5de6-4c22-b942-72f0032bf5cd"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{total_ventas}]]></textFieldExpression>
 			</textField>
 		</band>

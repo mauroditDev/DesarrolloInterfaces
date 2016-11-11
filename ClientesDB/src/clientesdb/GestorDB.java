@@ -177,7 +177,7 @@ public class GestorDB {
             JasperPrint informe =
                     JasperFillManager.fillReport(informeCargado,parametro,con);
             vistaInforme = new JasperViewer(informe,false);
-            vistaInforme.setTitle("Ejemplo de iReport");
+            vistaInforme.setTitle("Informe");
         }
         catch (Exception e)
         {
@@ -209,7 +209,7 @@ public class GestorDB {
             JasperPrint informe =
                     JasperFillManager.fillReport(informeCargado,parametro,con);
             vistaInforme = new JasperViewer(informe,false);
-            vistaInforme.setTitle("Ejemplo de iReport");
+            vistaInforme.setTitle("Gráfico");
         }
         catch (Exception e)
         {

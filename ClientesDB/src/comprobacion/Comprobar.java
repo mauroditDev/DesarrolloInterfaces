@@ -32,10 +32,11 @@ public class Comprobar {
                 if(dato.length()<=20)
                     return dato.matches("[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ.\\s-]+");
             case "Tel":
-                return dato.matches("[0-9]{9}");
+                return dato.matches("[0-9]{9}")||dato.length()==0;
             case "Email":
                 if(dato.length()<=20)
-                    return dato.matches("[0-9a-zA-Z.-]+@[0-9a-zA-Z.-]+");
+                    return dato.matches("[0-9a-zA-Z\\._-]+@[0-9a-zA-Z\\._-]+")
+                            ||dato.length()==0;
         }
         return false;
         

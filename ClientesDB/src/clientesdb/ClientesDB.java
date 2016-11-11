@@ -96,7 +96,7 @@ public class ClientesDB extends javax.swing.JFrame {
 
     private void jMenuItemClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClientesActionPerformed
         //abre la aplicación de mantenimiento de clientes
-        MantenimientoClientes mc = new MantenimientoClientes();
+        MantenimientoClientes mc = new MantenimientoClientes(this,false);
         mc.setVisible(true);
     }//GEN-LAST:event_jMenuItemClientesActionPerformed
 

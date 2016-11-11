@@ -42,7 +42,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     
     public MantenimientoClientes(javax.swing.JFrame parent, boolean modal){
         super(parent, modal);
-        
+        parent.setEnabled(false);
         initComponents();
         estado(-1);
         ableAll(false);
@@ -794,7 +794,8 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jMenuItemVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVolverActionPerformed
-        //vuelve a la ventana anterior
+        //vuelve a la ventana anterior y la activa
+        this.getParent().setEnabled(true);
         dispose();
     }//GEN-LAST:event_jMenuItemVolverActionPerformed
 
@@ -820,11 +821,14 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     }//GEN-LAST:event_jMenuItemConsultaActionPerformed
 
     private void jMenuItemCporCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCporCodigoActionPerformed
-        estado(4);
+        GestorDB ges = new GestorDB();
+                JasperViewer jv = ges.ejecutarInforme("000000", "zzzzzz");
+                jv.setVisible(true);
+                jv.setEnabled(true);
     }//GEN-LAST:event_jMenuItemCporCodigoActionPerformed
 
     private void jMenuItemCentreCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCentreCActionPerformed
-        Codigos codigos = new Codigos();
+        Codigos codigos = new Codigos(this,true);
         codigos.setVisible(true);
     }//GEN-LAST:event_jMenuItemCentreCActionPerformed
 
