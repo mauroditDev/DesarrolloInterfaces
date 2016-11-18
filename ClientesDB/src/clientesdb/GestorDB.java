@@ -17,6 +17,7 @@ import java.util.ArrayList;
 // Clases para gestionar el parámetro definido en el informe.
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 // Clases de JasperReports.
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -216,5 +217,148 @@ public class GestorDB {
             System.out.println("Error: "+e.getMessage());
         }
         return vistaInforme;
-}
+    }
+    
+    public ArrayList<String> getCliente(String codigo, int estado){
+        ArrayList<String> valores = new ArrayList<>();
+        try{
+            String sql = "";
+            switch(estado){
+                case 0: sql="SELECT nif, nombre, apellidos, domicilio, codigo_postal, localidad,"
+                            + " total_ventas FROM clientes WHERE codigo= \""+codigo+"\";";
+                    break;
+                case 1: sql="SELECT nif, nombre, apellidos, domicilio, codigo_postal, localidad,"
+                            + " total_compras FROM proveedores WHERE codigo= \""+codigo+"\";";
+                    break;
+            }
+            
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            while(rs.next()){
+                for(int i = 1; i<8; i++){
+                    valores.add(rs.getString(i));
+                }
+            }
+            
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return valores;
+    }
+    
+    public ArrayList<String> getArticulo(String codigo, int estado){
+        ArrayList<String> valores = new ArrayList<>();
+        try{
+            String sql = "";
+            /*
+            descripcion varchar(25),
+	stock INT,
+	stock_minimo INT,
+	precio_compra float(7,2),
+	precio_venta float(7,2)
+            */
+            switch(estado){
+                case 0:
+                    sql="SELECT descripcion, stock, precio_venta ";   
+                    break;
+                case 1:
+                    sql="SELECT descripcion, stock, precio_compra ";
+                    break;
+            }
+            sql += "FROM articulos WHERE codigo= \""+codigo+"\";";
+            
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            while(rs.next()){
+                for(int i = 1; i<4; i++){
+                    valores.add(rs.getString(i));
+                }
+            }
+            
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return valores;
+    }
+    
+    public boolean actualizar(int estado, String codigo,String articulo,int unidades,double importe){
+        try{
+            switch(estado){
+                case 0:
+                    stmnt.executeUpdate("UPDATE clientes SET total_ventas "
+                        + "= total_ventas + " + String.valueOf(importe)
+                            + "WHERE codigo = \"" + codigo + "\""
+                    +";");
+                    break;
+                case 1:
+                    stmnt.executeUpdate("UPDATE proveedores SET total_compras "
+                        + "= total_compras + " + String.valueOf(importe)
+                        + "WHERE codigo = \"" + codigo + "\""
+                    +";");
+                    break;
+            }
+            switch(estado){
+                case 0:
+                    stmnt.executeUpdate("UPDATE articulos SET stock = stock-"
+                    +String.valueOf(unidades)
+                    +" WHERE codigo = \""
+                    +articulo+"\""
+                    +";");
+                    break;
+                case 1:
+                    stmnt.executeUpdate("UPDATE articulos SET stock = stock+"
+                    +String.valueOf(unidades)
+                    +" WHERE codigo = \""
+                    +articulo+"\""
+                    +";");
+                    break;
+            }
+            
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    
+    public void volver(){
+        try{
+            con.rollback();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    public Vector getTodosArts(int estado){
+        Vector res = new Vector();
+        try{
+            String sql = new String();
+            switch(estado){
+                case 0:
+                    sql="SELECT codigo, descripcion, stock, precio_venta ";   
+                    break;
+                case 1:
+                    sql="SELECT codigo, descripcion, stock, precio_compra ";
+                    break;
+            }
+            sql += "FROM articulos";
+            
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            int j=0;
+            while(rs.next()){
+                for(int i = 1; i<5; i++){
+                    res.insertElementAt(rs.getString(i), j++);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return res;
+    }
+    
 }
