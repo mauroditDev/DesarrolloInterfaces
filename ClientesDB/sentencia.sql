@@ -26,8 +26,8 @@ create table proveedores(
 	apellidos varchar(35),
 	nombre varchar(15),
 	domicilio varchar(40),
-	codigo_postal varchar(5),
 	localidad varchar(20),
+	codigo_postal varchar(5),
 	telefono varchar(9),
 	fax varchar(9),
 	movil varchar(9),
@@ -45,28 +45,28 @@ create table articulos (
 );
 
 insert into articulos VALUES (
-	"art001",
+	"000001",
 	"Lampara de pie",
 	100,
 	10,
 	25,
 	63.11
 ),(
-	"art002",
+	"000002",
 	"Lampara de mesa",
 	200,
 	20,
 	9,
 	14.22
 ),(
-	"art003",
+	"000003",
 	"Reloj despertador",
 	300,
 	30,
 	4,
 	9.33
 ),(
-	"art004",
+	"000004",
 	"Lámpara de lava",
 	400,
 	40,
@@ -75,7 +75,7 @@ insert into articulos VALUES (
 );
 
 insert into proveedores VALUES(
-	"pro001",
+	"000001",
 	"55577789P",
 	"asd","asd",
 	"domicilio",
@@ -84,7 +84,7 @@ insert into proveedores VALUES(
 	"111111111","111111111","111111111",
 	"email",0.0
 	),(
-	"pro002",
+	"000002",
 	"55577789P",
 	"asd","asd",
 	"domicilio",
@@ -93,7 +93,7 @@ insert into proveedores VALUES(
 	"222222222","222222222","222222222",
 	"email",0.0
 	),(
-	"pro003",
+	"000003",
 	"55577789P",
 	"asd","asd",
 	"domicilio",
@@ -104,7 +104,7 @@ insert into proveedores VALUES(
 );
 
 insert into clientes VALUES (
-"z00001",
+"000001",
 "12345645C",
 "asd","asd",
 "domicilio",
@@ -113,7 +113,7 @@ insert into clientes VALUES (
 "111111111","111111111","111111111",
 "email",0.0
 ),(
-"z00002",
+"000002",
 "12345645C",
 "asd","asd",
 "domicilio",
@@ -122,7 +122,7 @@ insert into clientes VALUES (
 "111111111","111111111","111111111",
 "email",0.0
 ),(
-"z00003",
+"000003",
 "12345645C",
 "asd","asd",
 "domicilio",
@@ -131,7 +131,7 @@ insert into clientes VALUES (
 "111111111","111111111","111111111",
 "email",0.0
 ),(
-"z00004",
+"000004",
 "12345645C",
 "asd","asd",
 "domicilio",
@@ -140,7 +140,7 @@ insert into clientes VALUES (
 "111111111","111111111","111111111",
 "email",0.0
 ),(
-"z00005",
+"000005",
 "12345645C",
 "asd","asd",
 "domicilio",
@@ -149,48 +149,12 @@ insert into clientes VALUES (
 "111111111","111111111","111111111",
 "email",0.0
 ),(
-"z00006",
+"000006",
 "12345645C",
 "asd","asd",
 "domicilio",
 "Villalba",
 "28400",
-"111111111","111111111","111111111",
-"email",0.0
-),(
-"zx0001",
-"12345645C",
-"asd","asd",
-"domicilio",
-"Torrelodones",
-"28440",
-"111111111","111111111","111111111",
-"email",0.0
-),(
-"zx0002",
-"12345645C",
-"asd","asd",
-"domicilio",
-"Torrelodones",
-"28440",
-"111111111","111111111","111111111",
-"email",0.0
-),(
-"zx0003",
-"12345645C",
-"asd","asd",
-"domicilio",
-"Torrelodones",
-"28440",
-"111111111","111111111","111111111",
-"email",0.0
-),(
-"zx0004",
-"12345645C",
-"asd","asd",
-"domicilio",
-"Torrelodones",
-"28440",
 "111111111","111111111","111111111",
 "email",0.0
 );

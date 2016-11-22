@@ -5,8 +5,12 @@
  */
 package pedidos;
 
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /**
@@ -24,6 +28,12 @@ public class GestionPedidos extends javax.swing.JDialog {
     1: proveedor
     */
     
+    private int facturado;
+    /*
+    0 : sin lineas nuevas
+    1 : con lineas no guardadas
+    */
+    
     /**
      * Creates new form GestionPedidos
      */
@@ -38,6 +48,7 @@ public class GestionPedidos extends javax.swing.JDialog {
         initComponents();
         estado(-1);
         gestorDB = new clientesdb.GestorDB();
+        facturado = 0;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -113,6 +124,7 @@ public class GestionPedidos extends javax.swing.JDialog {
         jLabel2.setText("NIF");
 
         jTextFieldNif.setEditable(false);
+        jTextFieldNif.setFocusable(false);
         jTextFieldNif.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNifActionPerformed(evt);
@@ -122,6 +134,7 @@ public class GestionPedidos extends javax.swing.JDialog {
         jLabel3.setText("Nombre");
 
         jTextFieldNombre.setEditable(false);
+        jTextFieldNombre.setFocusable(false);
         jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNombreActionPerformed(evt);
@@ -131,16 +144,20 @@ public class GestionPedidos extends javax.swing.JDialog {
         jLabel4.setText("Apellidos");
 
         jTextFieldApellido.setEditable(false);
+        jTextFieldApellido.setFocusable(false);
 
         jLabel5.setText("Domicilio");
 
         jTextFieldDomicilio.setEditable(false);
+        jTextFieldDomicilio.setFocusable(false);
 
         jLabel6.setText("Código Postal");
 
         jTextFieldCodPost.setEditable(false);
+        jTextFieldCodPost.setFocusable(false);
 
         jTextFieldLocalidad.setEditable(false);
+        jTextFieldLocalidad.setFocusable(false);
 
         jLabel7.setText("Localidad");
 
@@ -165,6 +182,7 @@ public class GestionPedidos extends javax.swing.JDialog {
         jLabel12.setText("Descripción");
 
         jTextFieldDescripcion.setEditable(false);
+        jTextFieldDescripcion.setFocusable(false);
         jTextFieldDescripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldDescripcionActionPerformed(evt);
@@ -173,6 +191,11 @@ public class GestionPedidos extends javax.swing.JDialog {
 
         jLabel13.setText("Unidades");
 
+        jTextFieldUnidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldUnidadesActionPerformed(evt);
+            }
+        });
         jTextFieldUnidades.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextFieldUnidadesKeyPressed(evt);
@@ -182,10 +205,13 @@ public class GestionPedidos extends javax.swing.JDialog {
         jLabel14.setText("Stock");
 
         jTextFieldStock.setEditable(false);
+        jTextFieldStock.setFocusable(false);
 
         jTextFieldImporte.setEditable(false);
+        jTextFieldImporte.setFocusable(false);
 
         jTextFieldPrecio.setEditable(false);
+        jTextFieldPrecio.setFocusable(false);
 
         jLabel15.setText("Precio");
 
@@ -202,6 +228,7 @@ public class GestionPedidos extends javax.swing.JDialog {
                 "Código", "Descripción", "Stock", "Precio"
             }
         ));
+        jTable.setFocusable(false);
         jScrollPane1.setViewportView(jTable);
 
         jButtonBuscarArt.setMnemonic('b');
@@ -524,7 +551,7 @@ public class GestionPedidos extends javax.swing.JDialog {
         */
         for(int i = 0; i<listaArts.size();){
             for(int j = 0; j<4; j++){
-                relleno[i][j] = (String)listaArts.get(i);
+                relleno[i/4][j] = (String)listaArts.get(i++);
             }
         }
         jTable = new JTable(relleno,alTitColumn);
@@ -535,13 +562,47 @@ public class GestionPedidos extends javax.swing.JDialog {
         2 -> Se pueden seleccionar múltiples filas aunque no sean consecutivas.
         */
         jTable.setSelectionMode(0);
+        
+        jTable.setRowSelectionAllowed(true);
+        jTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table =(JTable) me.getSource();
+                Point p = me.getPoint();
+                if (me.getClickCount() == 2) {
+                    Vector vArt=new Vector();
+                    jTextFieldCodArt.setEnabled(true);
+                    //vArt=(Vector)listaArts.elementAt(jTable.getSelectedRow());
+                    int linea = jTable.getSelectedRow();
+                    System.out.println(linea);
+                    jTextFieldCodArt.setText((String)listaArts.get(0+(linea*4)));
+                    mostrarArt((String)listaArts.get(0+(linea*4)));
+                    //pongo la tabla a cero
+                    jTable = new JTable();
+                    jTable.setSelectionMode(0);
+                    jScrollPane1.setViewportView(jTable);
+                }
+            }
+        });
+        jTable.setFocusable(false);
         jScrollPane1.setViewportView(jTable);
+        jTextFieldCodArt.setEnabled(false);
     }//GEN-LAST:event_jButtonGridActionPerformed
 
     private void jMenuItemVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVolverActionPerformed
         //vuelve a la ventana anterior y la activa
-        this.getParent().setEnabled(true);
-        dispose();
+        if(facturado == 1){
+            if(javax.swing.JOptionPane.showConfirmDialog(null, 
+                                "¿Seguro que desea salir sin aplicar cambios?","Baja",
+                                JOptionPane.YES_NO_OPTION)==0){
+                this.getParent().setEnabled(true);
+                dispose();
+            }
+        }
+        else{
+            this.getParent().setEnabled(true);
+            dispose();
+        }
+        
     }//GEN-LAST:event_jMenuItemVolverActionPerformed
 
     private void jMenuItemClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClienteActionPerformed
@@ -553,7 +614,15 @@ public class GestionPedidos extends javax.swing.JDialog {
     }//GEN-LAST:event_jMenuItemProveedorActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        estado(-1);
+        if(facturado == 1){
+            if(javax.swing.JOptionPane.showConfirmDialog(null, 
+                                "¿Seguro que desea salir sin aplicar los cambios?","Baja",
+                                JOptionPane.YES_NO_OPTION)==0){
+                estado(-1);
+            }
+        }
+        else
+            estado(-1);
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jTextFieldCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCodigoActionPerformed
@@ -566,10 +635,15 @@ public class GestionPedidos extends javax.swing.JDialog {
                 while(jTextFieldCodigo.getText().length()<6){
                     jTextFieldCodigo.setText("0".concat(jTextFieldCodigo.getText()));
                 }
-                mostrar(jTextFieldCodigo.getText());
                 articulos(true);
                 botonesFac(false);
                 jTextFieldCodArt.grabFocus();
+                mostrar(jTextFieldCodigo.getText());
+                
+            }
+            else{
+                javax.swing.JOptionPane.showConfirmDialog(null, "Código incorrecto"
+                    , "Formulario incorrecto", javax.swing.JOptionPane.PLAIN_MESSAGE);
             }
         }
     }//GEN-LAST:event_jTextFieldCodigoKeyPressed
@@ -582,22 +656,32 @@ public class GestionPedidos extends javax.swing.JDialog {
                 }
                 mostrarArt(jTextFieldCodArt.getText());
             }
+            else{
+                javax.swing.JOptionPane.showConfirmDialog(null, "Código incorrecto"
+                    , "Formulario incorrecto", javax.swing.JOptionPane.PLAIN_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jTextFieldCodArtKeyPressed
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
         
+        facturado = 1;
+        
         int unidades = Integer.valueOf(jTextFieldUnidades.getText());
         double precio = Double.valueOf(jTextFieldPrecio.getText());
         double importe = precio*unidades;
-
-        jTextFieldImporte.setText(String.valueOf(importe));
-        gestorDB.actualizar(estado,jTextFieldCodigo.getText(),jTextFieldCodArt.getText(),
-        unidades,importe);
-        articulos(true);
-        botonesFac(true);
-        
-        
+        if(unidades > Integer.valueOf(jTextFieldStock.getText())||unidades<1){
+            javax.swing.JOptionPane.showConfirmDialog(null, "Por favor introduzca unidades válidas"
+                    , "Formulario incorrecto", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        }
+        else{
+            jTextFieldImporte.setText(String.valueOf(importe));
+            gestorDB.actualizar(estado,jTextFieldCodigo.getText(),jTextFieldCodArt.getText(),
+            unidades,importe);
+            articulos(true);
+            botonesFac(true);
+            mostrar(jTextFieldCodigo.getText());
+        }
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
     private void jTextFieldUnidadesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldUnidadesKeyPressed
@@ -608,26 +692,27 @@ public class GestionPedidos extends javax.swing.JDialog {
             }
             else{
                 int unidades = Integer.valueOf(jTextFieldUnidades.getText());
-                double precio = Double.valueOf(jTextFieldPrecio.getText());
-                double importe = precio*unidades;
+                if(Integer.valueOf(jTextFieldStock.getText()) > unidades){
+                    double precio = Double.valueOf(jTextFieldPrecio.getText());
+                    double importe = precio*unidades;
 
-                jTextFieldImporte.setText(String.valueOf(importe));
-                switch(estado){
-                    case 0:
-                        jTextFieldStock.setText(String.valueOf(
-                        Integer.valueOf(jTextFieldStock.getText())
-                                - unidades
-                        ));
-                        break;
-                    case 1:
-                        jTextFieldStock.setText(String.valueOf(
-                        Integer.valueOf(jTextFieldStock.getText())
-                                + unidades
-                        ));
+                    jTextFieldImporte.setText(String.valueOf(importe));
+                    switch(estado){
+                        case 0:
+                            jTextFieldStock.setText(String.valueOf(
+                            Integer.valueOf(jTextFieldStock.getText())
+                                    - unidades
+                            ));
+                            break;
+                        case 1:
+                            jTextFieldStock.setText(String.valueOf(
+                            Integer.valueOf(jTextFieldStock.getText())
+                                    + unidades
+                            ));
+                    }
+
+                    botonesArt(true);
                 }
-
-                botonesArt(true);
-
             }
         }
     }//GEN-LAST:event_jTextFieldUnidadesKeyPressed
@@ -637,17 +722,21 @@ public class GestionPedidos extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonCanPedidoActionPerformed
 
     private void jButtonCancelTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelTodoActionPerformed
+        facturado = 0;
         gestorDB.volver();
         javax.swing.JOptionPane.showConfirmDialog(null, "Canceladas las líneas no facturadas"
                     , "Aviso al usuario", javax.swing.JOptionPane.PLAIN_MESSAGE);
         botonesFac(false);
+        estado(-1);
     }//GEN-LAST:event_jButtonCancelTodoActionPerformed
 
     private void jButtonFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFacturaActionPerformed
-        gestorDB.volver();
+        facturado = 0;
+        gestorDB.facturar();
         javax.swing.JOptionPane.showConfirmDialog(null, "Líneas facturadas, ya no pueden cancelarse"
                     , "Aviso al usuario", javax.swing.JOptionPane.PLAIN_MESSAGE);
         botonesFac(false);
+        estado(-1);
     }//GEN-LAST:event_jButtonFacturaActionPerformed
 
     private void jButtonSeleccionarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarArtActionPerformed
@@ -656,10 +745,21 @@ public class GestionPedidos extends javax.swing.JDialog {
         javax.swing.JOptionPane.showConfirmDialog(this,"No ha seleccionado ningún artículo",
         "Seleccionar artículo",javax.swing.JOptionPane.CLOSED_OPTION);
         }else {
-            vArt=(Vector)listaArts.elementAt(jTable.getSelectedRow());
-            
+            jTextFieldCodArt.setEnabled(true);
+            int linea = jTable.getSelectedRow();
+            System.out.println(linea);
+            jTextFieldCodArt.setText((String)listaArts.get(0+(linea*4)));
+            mostrarArt((String)listaArts.get(0+(linea*4)));
+            //pongo la tabla a cero
+            jTable = new JTable();
+            jTable.setSelectionMode(0);
+            jScrollPane1.setViewportView(jTable);
         }
     }//GEN-LAST:event_jButtonSeleccionarArtActionPerformed
+
+    private void jTextFieldUnidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUnidadesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldUnidadesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -777,9 +877,16 @@ private void estado(int state){
         }
         this.setTitle(titulo);
         jTextFieldCodigo.setEnabled(estado != -1);
+        jTextFieldCodigo.setEditable(estado != -1);
         if(estado != -1){
             jTextFieldCodigo.grabFocus();
         }
+        else{
+            facturado = 0;
+        }
+        jTable = new JTable();
+            jTable.setSelectionMode(0);
+            jScrollPane1.setViewportView(jTable);
         articulos(false);
         setAll("");
     }
@@ -812,9 +919,10 @@ private void estado(int state){
             jTextFieldNombre.setText(valores.get(1));
             jTextFieldApellido.setText(valores.get(2));
             jTextFieldDomicilio.setText(valores.get(3));
-            jTextFieldCodPost.setText(valores.get(4));
-            jTextFieldLocalidad.setText(valores.get(5));
+            jTextFieldLocalidad.setText(valores.get(4));
+            jTextFieldCodPost.setText(valores.get(5));
             jTextFieldTotal.setText(valores.get(6));
+            jTextFieldCodigo.setEditable(false);
         }
     }
     
@@ -828,7 +936,9 @@ private void estado(int state){
             jTextFieldDescripcion.setText(valores.get(0));
             jTextFieldStock.setText(valores.get(1));
             jTextFieldPrecio.setText(valores.get(2));
+            jTextFieldUnidades.setEditable(true);
             jTextFieldUnidades.grabFocus();
+            botonesSel(false);
         }
     }
     
@@ -847,6 +957,7 @@ private void estado(int state){
         jTextFieldTotal.setEnabled(state);
         jTextFieldTotal.setText("");
         jTextFieldUnidades.setEnabled(state);
+        jTextFieldUnidades.setEditable(false);
         jTextFieldUnidades.setText("");
         botonesArt(false);
         botonesSel(state);
@@ -864,6 +975,7 @@ private void estado(int state){
     }
     
     private void botonesSel(boolean state){
+        jTextFieldCodArt.setEnabled(state);
         jButtonBuscarArt.setEnabled(state);
         jButtonGrid.setEnabled(state);
         jButtonSeleccionarArt.setEnabled(state);

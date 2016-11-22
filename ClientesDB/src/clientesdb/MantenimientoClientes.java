@@ -29,6 +29,8 @@ public class MantenimientoClientes extends javax.swing.JDialog {
     Clientes cli;
     
     
+    
+    
     /**
      * Creates new form FormularioEntradaDatos
      */

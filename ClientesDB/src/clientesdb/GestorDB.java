@@ -224,10 +224,10 @@ public class GestorDB {
         try{
             String sql = "";
             switch(estado){
-                case 0: sql="SELECT nif, nombre, apellidos, domicilio, codigo_postal, localidad,"
+                case 0: sql="SELECT nif, nombre, apellidos, domicilio, localidad, codigo_postal,"
                             + " total_ventas FROM clientes WHERE codigo= \""+codigo+"\";";
                     break;
-                case 1: sql="SELECT nif, nombre, apellidos, domicilio, codigo_postal, localidad,"
+                case 1: sql="SELECT nif, nombre, apellidos, domicilio, localidad, codigo_postal,"
                             + " total_compras FROM proveedores WHERE codigo= \""+codigo+"\";";
                     break;
             }
@@ -236,7 +236,12 @@ public class GestorDB {
             
             while(rs.next()){
                 for(int i = 1; i<8; i++){
-                    valores.add(rs.getString(i));
+                    if(i==7){
+                        valores.add(String.valueOf(rs.getFloat(i)));
+                        System.out.println(String.valueOf(rs.getFloat(i)));
+                    }
+                    else
+                        valores.add(rs.getString(i));
                 }
             }
             
@@ -327,6 +332,15 @@ public class GestorDB {
     public void volver(){
         try{
             con.rollback();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    public void facturar(){
+        try{
+            con.commit();
         }
         catch(Exception e){
             e.printStackTrace();
