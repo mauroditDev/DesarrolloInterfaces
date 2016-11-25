@@ -283,7 +283,7 @@ public class GestionPedidos extends javax.swing.JDialog {
             }
         });
 
-        jButtonCanPedido.setMnemonic('p');
+        jButtonCanPedido.setMnemonic('e');
         jButtonCanPedido.setText("Cancelar Pedido");
         jButtonCanPedido.setEnabled(false);
         jButtonCanPedido.addActionListener(new java.awt.event.ActionListener() {
@@ -294,7 +294,6 @@ public class GestionPedidos extends javax.swing.JDialog {
 
         jButtonCancelTodo.setMnemonic('c');
         jButtonCancelTodo.setText("Cancelar Todo");
-        jButtonCancelTodo.setEnabled(false);
         jButtonCancelTodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelTodoActionPerformed(evt);
@@ -618,6 +617,7 @@ public class GestionPedidos extends javax.swing.JDialog {
             if(javax.swing.JOptionPane.showConfirmDialog(null, 
                                 "¿Seguro que desea salir sin aplicar los cambios?","Baja",
                                 JOptionPane.YES_NO_OPTION)==0){
+                gestorDB.volver();
                 estado(-1);
             }
         }
@@ -670,18 +670,13 @@ public class GestionPedidos extends javax.swing.JDialog {
         int unidades = Integer.valueOf(jTextFieldUnidades.getText());
         double precio = Double.valueOf(jTextFieldPrecio.getText());
         double importe = precio*unidades;
-        if(unidades > Integer.valueOf(jTextFieldStock.getText())||unidades<1){
-            javax.swing.JOptionPane.showConfirmDialog(null, "Por favor introduzca unidades válidas"
-                    , "Formulario incorrecto", javax.swing.JOptionPane.PLAIN_MESSAGE);
-        }
-        else{
-            jTextFieldImporte.setText(String.valueOf(importe));
-            gestorDB.actualizar(estado,jTextFieldCodigo.getText(),jTextFieldCodArt.getText(),
-            unidades,importe);
-            articulos(true);
-            botonesFac(true);
-            mostrar(jTextFieldCodigo.getText());
-        }
+        
+        gestorDB.actualizar(estado,jTextFieldCodigo.getText(),jTextFieldCodArt.getText(),
+        unidades,importe);
+        articulos(true);
+        botonesFac(true);
+        mostrar(jTextFieldCodigo.getText());
+        
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
     private void jTextFieldUnidadesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldUnidadesKeyPressed
@@ -692,26 +687,47 @@ public class GestionPedidos extends javax.swing.JDialog {
             }
             else{
                 int unidades = Integer.valueOf(jTextFieldUnidades.getText());
-                if(Integer.valueOf(jTextFieldStock.getText()) > unidades){
-                    double precio = Double.valueOf(jTextFieldPrecio.getText());
-                    double importe = precio*unidades;
+                switch(estado){
+                    case 0:
+                        if(Integer.valueOf(jTextFieldStock.getText()) >= unidades && unidades > 0){
+                            double precio = Double.valueOf(jTextFieldPrecio.getText());
+                            double importe = precio*unidades;
 
-                    jTextFieldImporte.setText(String.valueOf(importe));
-                    switch(estado){
-                        case 0:
+                            jTextFieldImporte.setText(String.valueOf(round(importe,2)));
                             jTextFieldStock.setText(String.valueOf(
-                            Integer.valueOf(jTextFieldStock.getText())
-                                    - unidades
-                            ));
-                            break;
-                        case 1:
-                            jTextFieldStock.setText(String.valueOf(
-                            Integer.valueOf(jTextFieldStock.getText())
-                                    + unidades
-                            ));
-                    }
+                                    Integer.valueOf(jTextFieldStock.getText())
+                                            - unidades
+                                    ));
+                            botonesArt(true);
+                        }
+                        else{
+                            javax.swing.JOptionPane.showConfirmDialog(null, "Por favor introduzca unidades válidas"
+                        , "Formulario incorrecto", javax.swing.JOptionPane.PLAIN_MESSAGE);
+                            jTextFieldUnidades.setText("");
+                            jTextFieldUnidades.grabFocus();
+                        }
+                        break;
+                        
+                    case 1:
+                        if(unidades > 0){
+                            double precio = Double.valueOf(jTextFieldPrecio.getText());
+                            double importe = precio*unidades;
 
-                    botonesArt(true);
+                            jTextFieldImporte.setText(String.valueOf(round(importe,2)));
+                            jTextFieldStock.setText(String.valueOf(
+                                    Integer.valueOf(jTextFieldStock.getText())
+                                            + unidades
+                                    ));
+                            botonesArt(true);
+                        }
+                        else{
+                            javax.swing.JOptionPane.showConfirmDialog(null, "Por favor introduzca unidades válidas"
+                        , "Formulario incorrecto", javax.swing.JOptionPane.PLAIN_MESSAGE);
+                            jTextFieldUnidades.setText("");
+                            jTextFieldUnidades.grabFocus();
+                        }
+                        break;
+                    
                 }
             }
         }
@@ -727,16 +743,29 @@ public class GestionPedidos extends javax.swing.JDialog {
         javax.swing.JOptionPane.showConfirmDialog(null, "Canceladas las líneas no facturadas"
                     , "Aviso al usuario", javax.swing.JOptionPane.PLAIN_MESSAGE);
         botonesFac(false);
-        estado(-1);
+        estado(estado);
     }//GEN-LAST:event_jButtonCancelTodoActionPerformed
 
     private void jButtonFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFacturaActionPerformed
-        facturado = 0;
-        gestorDB.facturar();
-        javax.swing.JOptionPane.showConfirmDialog(null, "Líneas facturadas, ya no pueden cancelarse"
-                    , "Aviso al usuario", javax.swing.JOptionPane.PLAIN_MESSAGE);
-        botonesFac(false);
-        estado(-1);
+        if(!jTextFieldCodArt.getText().equals("")){
+            if(javax.swing.JOptionPane.showConfirmDialog(null, "Ha introducido una línea no aceptada. "+
+                    "Si factura sin aceptar esa línea no será tenida en cuenta, ¿Desea continuar?"
+                        , "Aviso al usuario", javax.swing.JOptionPane.YES_NO_OPTION)==0){
+                facturado = 0;
+                gestorDB.facturar();
+                javax.swing.JOptionPane.showConfirmDialog(null, "Líneas facturadas, ya no pueden cancelarse"
+                            , "Aviso al usuario", javax.swing.JOptionPane.PLAIN_MESSAGE);
+                botonesFac(false);
+                estado(estado);
+            }
+        }else{
+            facturado = 0;
+                gestorDB.facturar();
+                javax.swing.JOptionPane.showConfirmDialog(null, "Líneas facturadas, ya no pueden cancelarse"
+                            , "Aviso al usuario", javax.swing.JOptionPane.PLAIN_MESSAGE);
+                botonesFac(false);
+                estado(estado);
+        }
     }//GEN-LAST:event_jButtonFacturaActionPerformed
 
     private void jButtonSeleccionarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarArtActionPerformed
@@ -878,17 +907,17 @@ private void estado(int state){
         this.setTitle(titulo);
         jTextFieldCodigo.setEnabled(estado != -1);
         jTextFieldCodigo.setEditable(estado != -1);
+        jTable = new JTable();
+            jTable.setSelectionMode(0);
+            jScrollPane1.setViewportView(jTable);
+        articulos(false);
+        setAll("");
         if(estado != -1){
             jTextFieldCodigo.grabFocus();
         }
         else{
             facturado = 0;
         }
-        jTable = new JTable();
-            jTable.setSelectionMode(0);
-            jScrollPane1.setViewportView(jTable);
-        articulos(false);
-        setAll("");
     }
 
     public void setAll(String cont){
@@ -939,6 +968,7 @@ private void estado(int state){
             jTextFieldUnidades.setEditable(true);
             jTextFieldUnidades.grabFocus();
             botonesSel(false);
+            jButtonCanPedido.setEnabled(true);
         }
     }
     
@@ -946,6 +976,7 @@ private void estado(int state){
         
         jTextFieldCodArt.setEnabled(state);
         jTextFieldCodArt.setText("");
+        jTextFieldCodArt.grabFocus();
         jTextFieldDescripcion.setEnabled(state);
         jTextFieldDescripcion.setText("");
         jTextFieldImporte.setEnabled(state);
@@ -971,7 +1002,6 @@ private void estado(int state){
     
     private void botonesFac(boolean state){
         jButtonFactura.setEnabled(state);
-        jButtonCancelTodo.setEnabled(state);
     }
     
     private void botonesSel(boolean state){
@@ -981,4 +1011,12 @@ private void estado(int state){
         jButtonSeleccionarArt.setEnabled(state);
     }
 
+    public static double round(double value, int places) {
+
+    long factor = (long) Math.pow(10, places);
+    value = value * factor;
+    long tmp = Math.round(value);
+    return (double) tmp / factor;
+    }
+    
 }

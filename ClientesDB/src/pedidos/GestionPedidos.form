@@ -549,7 +549,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButtonCanPedido">
       <Properties>
-        <Property name="mnemonic" type="int" value="112"/>
+        <Property name="mnemonic" type="int" value="101"/>
         <Property name="text" type="java.lang.String" value="Cancelar Pedido"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -561,7 +561,6 @@
       <Properties>
         <Property name="mnemonic" type="int" value="99"/>
         <Property name="text" type="java.lang.String" value="Cancelar Todo"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelTodoActionPerformed"/>
