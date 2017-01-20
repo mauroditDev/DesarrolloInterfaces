@@ -8,8 +8,29 @@ import comprobacion.*;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.view.JasperViewer;
 /**
- *
- * @author alumno
+ * <h7>Mantenimiento Clientes: </h7>
+* <ul><h7>public {@link class} MantenimientoClientes {@link extends}
+* {@link javax.swing.JDialog}</h7>
+* <ul>
+* <br>
+* Esta clase de tipo JDialog Permite la gestión de los clientes dentro de la 
+* aplicación. Funciona de interfaz gráfica con la clase
+* {@link clientesdb.GestorDB}
+* <br>
+* <br>
+* <li>
+* Actúa sobre la tabla clientes.
+* </li>
+* <li>
+* Permite altas, bajas y modificaciones.
+* </li>
+
+* </ul>
+* </ul>
+ * 
+ * @author Mauro di Tullio
+ * @see javax.swing.JDialog
+ * @see clientesdb.GestorDB
  */
 public class MantenimientoClientes extends javax.swing.JDialog {
 
@@ -41,7 +62,31 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         ableAll(false);
         cli = new Clientes();
     }
-    
+    /**
+     * <h7>Constructor: </h7>
+    * <ul><h7>public MantenimientoClientes ({@link javax.swing.JFrame} parent,
+    * {@link boolean} modal)</h7>
+    * <ul>
+    * <br>
+    * Constructor parametrizado de la clase {@link clientesdb.MantenimientoClientes}
+    * <br>
+    * <br>
+    * <li>
+    * Inicializa la variable entera estado a -1 (idle)
+    * </li>
+    * <li>
+    * Llama a la función ableAll con el parámetro false
+    * </li>
+    * </ul>
+    * </ul>
+     * 
+     * @author Mauro di Tullio
+     * @param parent establece el padre de la instancia
+     * @param modal determina si es modal o no la instancia construída
+     * @see estado(int)
+     * @see ableAll(boolean)
+     * @see clientesdb.Clientes
+     */
     public MantenimientoClientes(javax.swing.JFrame parent, boolean modal){
         super(parent, modal);
         parent.setEnabled(false);
@@ -951,6 +996,31 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         }
     }
     
+    /**
+     * <h7>comprobarTodo: </h7>
+    * <ul><h7>private boolean comprobarTodo()</h7>
+    * <ul>
+    * <br>
+    * Función que agrupa las comprobaciones de validación de los campos del 
+    * formulario de clientes.
+    * <br>
+    * <br>
+    * <li>
+    *  Devuelve true si todas las comprobaciones 
+    * devuelven true.
+    * </li>
+    * <li>
+    * En caso contrario ejecuta la funcion {@link noValida(JTextField)}
+    * con el primer campo que devuelva false.
+    * </li>
+    * </ul>
+    * </ul>
+     * 
+     * @author Mauro di Tullio
+     * @return true si todas las comprobaciones devuelven true, false en otro caso
+     * @see Comprobar#comprobarCampo(String, String)
+     * @see noValida(javax.swing.JTextField)
+     */
     private boolean comprobarTodo(){
         if (Comprobar.comprobarCampo("NIF",jTextFieldNIF.getText())){
             if(Comprobar.comprobarCampo("Nombre", jTextFieldNombre.getText())){
@@ -1015,6 +1085,26 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         }
     }
    
+    /**
+     * <h7>noValida: </h7>
+    * <ul><h7>private static void noValida(javax.swing.JTextField)</h7>
+    * <ul>
+    * <br>
+    * Función destinada a ser lanzada desde {@link comprobarTodo()}
+    * que lanza un javax.swing.JOptionPane con un mensaje de alerta de
+    * formulario incorrecto alertando del campo que no ha validado
+    * <br>
+    * <br>
+    * <li>
+    *  Además selecciona el texto y lleva el foco al campo pasado por parámetro
+    * </li>
+    * </ul>
+    * </ul>
+     * 
+     * @author Mauro di Tullio
+     * @param campo JTextField que no ha superado la comprobación
+     * @see comprobarTodo()
+     */
     private static void noValida(javax.swing.JTextField campo){
         String mensaje = "Hay un error en el campo " + campo.getName();
         javax.swing.JOptionPane.showConfirmDialog(null, mensaje, "Formulario incorrecto", 
@@ -1023,7 +1113,24 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         campo.selectAll();
     }
     
-    //función para conseguir la letra del dni a partid del número
+    /**
+     * <h7>letraNIF: </h7>
+    * <ul><h7>private String letraNIF()</h7>
+    * <ul>
+    * <br>
+    * Función para calcular la letra que sigue a un conjunto de números que
+    * conforman un NIF según la normativa en España
+    * <br>
+    * <br>
+    * <li>
+    * Devuelve un String con un único caracter.
+    * </li>
+    * </ul>
+    * </ul>
+     * 
+     * @author Mauro di Tullio
+     * @return un String con una única letra mayúscula
+     */
     private static String letraNIF(Integer dni){
         String juegoCaracteres="TRWAGMYFPDXBNJZSQVHLCKE";
         int modulo = dni % 23;
@@ -1031,7 +1138,31 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         return letra.toString(); 
     }
     
-    //función para manejar todos los estados de enabled simultaneamente
+    /**
+     * <h7>ableAll: </h7>
+    * <ul><h7>private void ableAll(boolean state)</h7>
+    * <ul>
+    * <br>
+    * Punción que agrupa las comprobaciones de validación de los campos del 
+    * formulario de clientes.
+    * <br>
+    * <br>
+    * <li>
+    *  Devuelve true si todas las comprobaciones 
+    * devuelven true.
+    * </li>
+    * <li>
+    * En caso contrario ejecuta la funcion {@link noValida(JTextField)}
+    * con el primer campo que devuelva false.
+    * </li>
+    * </ul>
+    * </ul>
+     * 
+     * @author Mauro di Tullio
+     * @param state el booleano que indica a qué valor se llevarán los campos
+     * @see Comprobar#comprobarCampo(String, String) (int)
+     * @see noBalida(JTextField)
+     */
     private void ableAll(boolean state){
         jTextFieldNombre.setEnabled(state);
         jTextFieldApellidos.setEnabled(state);
@@ -1136,7 +1267,7 @@ public class MantenimientoClientes extends javax.swing.JDialog {
         estado = state;
         String titulo = "Mantenimiento Clientes";
         jMenu1.setEnabled(true);
-        jMenu2.setEnabled(true);
+        jMenu2.setEnabled(true);GestorDB g=new GestorDB();
         switch(state){
             case 0:
                 titulo += " - Alta";

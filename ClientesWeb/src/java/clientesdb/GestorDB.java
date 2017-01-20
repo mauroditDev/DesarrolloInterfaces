@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 // Clases para gestionar el parámetro definido en el informe.
@@ -19,9 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 // Clases de JasperReports.
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.*;
+//import net.sf.jasperreports.engine.*;
+//import net.sf.jasperreports.engine.util.JRLoader;
+//import net.sf.jasperreports.view.*;
 
 /**
      * <h7>GestorDB: </h7>
@@ -243,6 +245,82 @@ public class GestorDB {
             return "";
         }
     }
+    
+    public boolean compraOnline(Articulo art, int num_fra, Clientes cli){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String fecha = sdf.format(new Date());
+            stmnt.executeUpdate(
+                    "insert into compraweb ("
+                            + "num_fra," +
+                            "cliente," +
+                            "articulo," +
+                            "unidades," +
+                            "fecha)"+
+                    "values ("
+                            + num_fra +
+                            cli.codigo+
+                            art.codigo+
+                            art.cantidad+
+                            fecha+")"
+            );
+            con.commit();
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public HashMap getTodoFromFra(int idFra){
+        try{
+            HashMap res = new HashMap();
+            
+            ResultSet rs = stmnt.executeQuery(
+                    "select * from compraweb where num_fra ="+idFra
+            );
+            ArrayList<Articulo> arts = new ArrayList<>();
+            ArrayList<Float> cants = new ArrayList<>();
+            if(rs.next()){
+                res.put("cli", this.getCliente(rs.getString("cliente")));
+                res.put("fecha", rs.getString("fecha"));
+                cants.add(rs.getFloat("unidades"));
+                arts.add(this.getArticulo(rs.getString("articulo")));
+            }
+            else{
+                return null;
+            }
+            while(rs.next()){
+                cants.add(rs.getFloat("unidades"));
+                arts.add(this.getArticulo(rs.getString("articulo")));
+            }
+            res.put("cantidades", cants);
+            res.put("articulos", arts);
+            return res;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public int ultimaFactura(){
+        try{
+            ResultSet rs = stmnt.executeQuery(
+                    "select num_fra from compraweb order by id desc limit 1"
+            );
+            if(rs.next()){
+                return rs.getInt("num_fra")+1;
+            }
+            else{
+                return 1;
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    
     /**
     *<h7>modCliente(): </h7>
     * <ul><h7>public boolean modCliente()</h7>
@@ -326,25 +404,25 @@ public class GestorDB {
      * en caso de error el retorno será null
      * @see <a href="http://jasperreports.sourceforge.net/api/net/sf/jasperreports/view/JasperViewer.html">JasperViewer</a>
      */
-    public JasperViewer ejecutarInforme(String inicio, String fin) {
+    //public JasperViewer ejecutarInforme(String inicio, String fin) {
     /* Se crea el objeto JasperViewer que devolverá el método.
      * Este objeto contendrá la ventana de la vista previa del informe. */
-    JasperViewer vistaInforme=null;
-    try {
+    //JasperViewer vistaInforme=null;
+    //try {
         /* Creamos una cadena que contendrá la ruta completa donde está
          * almacenado el archivo report1.jasper. */
-        String archivoJasper = "/media/Datos/Datos_Mauro/Desarrollo_Interfaces/"
-                + "Calculadora/ClientesDB/mysql-connector-java-5.1.40/report2.jasper";
+    //    String archivoJasper = "/media/Datos/Datos_Mauro/Desarrollo_Interfaces/"
+//                + "Calculadora/ClientesDB/mysql-connector-java-5.1.40/report2.jasper";
             // Se crea un objeto para cargar el informe.
-            JasperReport informeCargado = null;
-            try
-            {
-                informeCargado = (JasperReport) JRLoader.loadObject(archivoJasper);
-            }
-            catch (Exception e)
-            {
-                System.out.println("Error al cargar el informe: " + e.getMessage());
-            }
+     //       JasperReport informeCargado = null;
+     //       try
+     //       {
+     //           informeCargado = (JasperReport) JRLoader.loadObject(archivoJasper);
+     //       }
+     //       catch (Exception e)
+     //       {
+     //           System.out.println("Error al cargar el informe: " + e.getMessage());
+     /*       }
             Map parametro = new HashMap();
             parametro.put("fin", fin);
             parametro.put("inicio",inicio);
@@ -359,7 +437,7 @@ public class GestorDB {
         }
         return vistaInforme;
     }
-    
+    */
     /**
     * <h7>ejecutarPie: </h7>
     * <ul><h7>public JasperViewer ejecutarPie()</h7>
@@ -381,14 +459,14 @@ public class GestorDB {
      * en caso de error el retorno será null
      * @see <a href="http://jasperreports.sourceforge.net/api/net/sf/jasperreports/view/JasperViewer.html">JasperViewer</a>
      */
-    public JasperViewer ejecutarPie() {
+    //public JasperViewer ejecutarPie() {
     /* Se crea el objeto JasperViewer que devolverá el método.
      * Este objeto contendrá la ventana de la vista previa del informe. */
-    JasperViewer vistaInforme=null;
-    try {
+    //JasperViewer vistaInforme=null;
+    //try {
         /* Creamos una cadena que contendrá la ruta completa donde está
          * almacenado el archivo report1.jasper. */
-        String archivoJasper = "/media/Datos/Datos_Mauro/Desarrollo_Interfaces"
+     /*   String archivoJasper = "/media/Datos/Datos_Mauro/Desarrollo_Interfaces"
                 + "/Calculadora/ClientesDB/mysql-connector-java-5.1.40/report2-graf.jasper";
             // Se crea un objeto para cargar el informe.
             JasperReport informeCargado = null;
@@ -412,7 +490,7 @@ public class GestorDB {
         }
         return vistaInforme;
     }
-    
+    */
     /**
      * <h7>getCliente: </h7>
     * <ul><h7>public ArrayList&lt;String&gt; getCliente(String codigo, int estado)</h7>
@@ -467,6 +545,29 @@ public class GestorDB {
         return valores;
     }
     
+    public Clientes getCliente(String cod){
+        try{
+            ResultSet rs = stmnt.executeQuery("select * from clientes where codigo ='"+cod+"'");
+            if(rs.next()){
+                Clientes res = new Clientes();
+                res.codigo = rs.getString("codigo");
+                res.nif = rs.getString("nif");
+                res.apellidos = rs.getString("apellidos");
+                res.nombre = rs.getString("nombre");
+                res.domicilio = rs.getString("domicilio");
+                res.localidad = rs.getString("localidad");
+                res.email = rs.getString("email");
+                res.codigo_postal = rs.getString("codigo_postal");
+                res.total_ventas = rs.getFloat("total_ventas");
+                return res;
+            }
+            return null;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     /**
      * <h7>getArticulo: </h7>
     * <ul><h7>public ArrayList&lt;String&gt; getArticulo(String codigo,
@@ -517,6 +618,47 @@ public class GestorDB {
             e.printStackTrace();
         }
         return valores;
+    }
+    
+    public ArrayList<Articulo> getArticulos(){
+        ArrayList<Articulo> valores = new ArrayList<>();
+        try{
+        ResultSet rs = stmnt.executeQuery("select * from articulos");
+            
+            while(rs.next()){
+                Articulo aux = new Articulo();
+                aux.codigo = rs.getString("codigo");
+                aux.descripcion = rs.getString("descripcion");
+                aux.precio_compra = rs.getFloat("precio_compra");
+                valores.add(aux);
+            }
+            
+            return valores;
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public Articulo getArticulo(String codigo){
+        try{
+        ResultSet rs = stmnt.executeQuery("select * from articulos where codigo = '"+codigo+"'");
+            
+            while(rs.next()){
+                Articulo aux = new Articulo();
+                aux.codigo = rs.getString("codigo");
+                aux.descripcion = rs.getString("descripcion");
+                aux.precio_compra = rs.getFloat("precio_compra");
+                return aux;
+            }
+            
+            return null;
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
     
     /**
@@ -692,6 +834,20 @@ public class GestorDB {
             e.printStackTrace();
         }
         return res;
+    }
+    
+    public ArrayList<String> getCodigosClientes(){
+        try{
+            ArrayList<String> res = new ArrayList<String>();
+            ResultSet rs = stmnt.executeQuery("select codigo from clientes");
+            while(rs.next())
+                res.add(rs.getString(1));
+            return res;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
     
 }
