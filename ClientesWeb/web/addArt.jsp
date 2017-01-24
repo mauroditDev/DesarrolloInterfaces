@@ -50,7 +50,7 @@
         <script>
             
             function reset(){
-                document.getElementById("uds").value = "0";
+                document.getElementById("uds").value = "";
                 document.getElementById("uds").focus();
                 document.getElementById("importe").textContent = "0";
             }

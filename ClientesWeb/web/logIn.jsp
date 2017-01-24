@@ -100,7 +100,7 @@
                 %>
                 if( <%=art.codigo%> == cod_art){
                     document.getElementById("txt_art").value = cod_art;
-                    alert(document.getElementById("txt_art").value);
+                    //alert(document.getElementById("txt_art").value);
                     return true;
                 }
                 <%
@@ -116,7 +116,7 @@
             %>
             <hr>
             <h3>Total compras: <%=totalCompra%></h3>
-            <form action="finalizaCompra.jsp" method="post">
+            <form action="finalizarCompra.jsp" method="post">
                 <input type="submit" value="ValidarCompra"/>
             </form>
             <%

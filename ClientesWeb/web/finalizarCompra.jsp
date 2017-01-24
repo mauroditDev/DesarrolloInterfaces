@@ -51,7 +51,7 @@
         <hr>
         <h3 style="text-align: center;">Empresa Proyecto Web</h3>
         <h4 style="text-align: center;">N.I.F. A48585636J</h4>
-        <h4 style="text-align: center;">c/ playa de Samil, 14 - 28400 Collado Villalba, Madird</h4>
+        <h4 style="text-align: center;">c/ playa de Samil, 14 - 28400 Collado Villalba, Madrid</h4>
         <hr>
         <table style="margin: 12px auto;">
             <tr>

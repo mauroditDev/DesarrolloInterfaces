@@ -258,11 +258,17 @@ public class GestorDB {
                             "unidades," +
                             "fecha)"+
                     "values ("
-                            + num_fra +
-                            cli.codigo+
-                            art.codigo+
-                            art.cantidad+
-                            fecha+")"
+                            + num_fra +","+
+                           "'"+cli.codigo+"'"+","+
+                           "'"+art.codigo+"'"+","+
+                            art.cantidad+","+
+                            "'"+fecha+"')"
+            );
+            float tot = art.cantidad * art.precio_compra;
+            stmnt.executeUpdate(
+                    "update clientes set "
+                            + "total_ventas = total_ventas + "+
+                            tot + " where codigo = '"+cli.codigo+"'"
             );
             con.commit();
             return true;
@@ -272,8 +278,27 @@ public class GestorDB {
         }
     }
     
+    public ArrayList<Integer> getFacturasEntreFechas(String fechaIni,String fechaFin, String codigoCliente){
+        ArrayList<Integer> res = new ArrayList<>();
+        try{
+            String sql = "select distinct num_fra from compraweb where fecha <="+
+                    "'"+fechaFin+"' and fecha >= '"+fechaIni+"' and cliente = '"+
+                    codigoCliente+"'";
+            System.err.println(sql);
+            ResultSet rs = stmnt.executeQuery(sql);
+            while(rs.next()){
+                res.add(rs.getInt("num_fra"));
+            }
+            return res;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     public HashMap getTodoFromFra(int idFra){
         try{
+            System.out.println("********************* Nfra:"+idFra);
             HashMap res = new HashMap();
             
             ResultSet rs = stmnt.executeQuery(
@@ -281,19 +306,30 @@ public class GestorDB {
             );
             ArrayList<Articulo> arts = new ArrayList<>();
             ArrayList<Float> cants = new ArrayList<>();
+            ArrayList<String> codArts= new ArrayList<>();
+            String codCliente;
             if(rs.next()){
-                res.put("cli", this.getCliente(rs.getString("cliente")));
+                codCliente = rs.getString("cliente");
+                System.out.println("*****************#####");
                 res.put("fecha", rs.getString("fecha"));
                 cants.add(rs.getFloat("unidades"));
-                arts.add(this.getArticulo(rs.getString("articulo")));
+                codArts.add(rs.getString("articulo"));
             }
             else{
+                System.out.println("*****************##### el hashmap es null ####**********************");
                 return null;
             }
             while(rs.next()){
                 cants.add(rs.getFloat("unidades"));
-                arts.add(this.getArticulo(rs.getString("articulo")));
+                codArts.add(rs.getString("articulo"));
             }
+            for(Float can: cants){
+                System.out.println("en el cants: "+can);
+            }
+            for(String cod: codArts){
+                arts.add(this.getArticulo(cod));
+            }
+            res.put("cli", this.getCliente(codCliente));
             res.put("cantidades", cants);
             res.put("articulos", arts);
             return res;

@@ -19,6 +19,7 @@
     </head>
     <body onLoad="document.getElementById('inputCliente').focus()">
         <h1>Gestión de Pedidos</h1>
+        <h4>Introduzca número de Cliente:</h4>
         <form name = "frm" action="logIn.jsp" onsubmit="return comprobar()" method="post">
             <input type="text" name="cod_cliente" id="inputCliente"/><br/>
             <input type="submit" > <button onclick="reset()">Cancelar</button><br/>

@@ -22,6 +22,7 @@
             sesion.setAttribute("cliente", new Clientes());
         %>
         <h1>Proyecto Web con Base de Datos</h1>
-        <a href="gestion-pedidos.jsp">Gestión de Pedidos</a>
+        <a href="gestion-pedidos.jsp">Gestión de Pedidos</a><br/>
+        <a href="extractos.jsp">Extractos</a><br/>
     </body>
 </html>
