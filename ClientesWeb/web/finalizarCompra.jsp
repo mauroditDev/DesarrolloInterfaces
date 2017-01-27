@@ -37,7 +37,7 @@
      if(ok){
         %>
         <h1>Pedido Finalizado</h1>
-        <p> Si desea imprimir puse <a href="imprimirFactura.jsp">aquí</a> si no desea imprimir la
+        <p> Si desea imprimir puse <a href="imprimirFactura.jsp" target="_blank">aquí</a> si no desea imprimir la
             factura puede volver a la <a href="gestion-pedidos.jsp">Página principal</a> </p>
         <hr>
         <%

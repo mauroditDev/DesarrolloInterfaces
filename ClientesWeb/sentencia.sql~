@@ -46,6 +46,7 @@ create table articulos (
 
 create table compraweb (
 	id INT(6) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	num_fra int(6),
 	cliente varchar(6),
 	articulo varchar(6),
 	unidades FLOAT(6,2),

@@ -123,11 +123,11 @@
                 j++;
                 }%>
                 <hr>
-               <p> Si desea imprimir puse <a href="imprimirFacturaMult.jsp">aquí</a> si no desea imprimir la<br/>
-                 factura puede volver a la <a href="index.jsp">Página principal</a> </p>
+               <p> Si desea imprimir pulse <a href="imprimirFacturaMult.jsp" target="_blank">aquí</a><br/>
+                   si no desea imprimir la factura puede volver a la <a href="index.jsp">Página principal</a> </p>
             <%}%>
             <hr>
-            <a href="index.jsp">Página principal</a> | <a href="extractos.jsp">Nuevo Cliente</a>
+            <a href="index.jsp">Página principal</a> | <a href="extractos.jsp" >Nuevo Cliente</a>
             <hr>
     </body>
 </html>
